@@ -2,7 +2,48 @@
 {% block title%}AskMate{% endblock %}
 {% block content %}
     <h1>AskMate</h1>
-    <h2><a href="{{ url_for('route_ask_question') }}">Add new question</a></h2>
+    <h2><a href="{{ url_for('route_ask_question') }}">Add new question</a></h2><br>
+
+    <form action="/list">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 150px">Order By</th>
+                    <th style="width: 150px">Order Direction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align: center">
+                        <select id="order-by" name="order_by">
+                            {% for mode in sorting_modes %}
+                                {% if mode == current_ordering %}
+                                    <option selected="selected" label="{{ sorting_modes[mode] }}">{{ mode }}</option>
+                                {% else %}
+                                    <option label="{{ sorting_modes[mode] }}">{{ mode }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td style="text-align: center">
+                        <select id="order-direction" name="order_direction">
+                            {% for direction in sorting_direction %}
+                                {% if direction == current_direction %}
+                                    <option selected="selected" label="{{ sorting_direction[direction] }}">{{ direction }}</option>
+                                {% else %}
+                                    <option label="{{ sorting_direction[direction] }}">{{ direction }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit">Apply</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <br><br>
+    </form>
     <table>
         <thead>
         <tr>
