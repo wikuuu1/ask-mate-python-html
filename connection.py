@@ -1,6 +1,9 @@
 import csv
 import os
 
+import util
+import time
+
 QUESTION_DATA_FILE_PATH = 'sample_data/question.csv'
 ANSWER_DATA_FILE_PATH = 'sample_data/answer.csv'
 QUESTION_DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -41,6 +44,21 @@ def write_table_to_file(table, file_name, separator='#'):
         for record_dict in table:
             values_row = []
             for label in headers:
-                values_row.append(record_dict[label])
+                if record_dict[label] == record_dict['id']:
+                    values_row.append(util.generate_id())
+                if record_dict[label] == record_dict['submission_time']:
+                    values_row.append(int(time.time()))
+                if record_dict[label] == record_dict['view_number']:
+                    values_row.append(1)  # TODO: COUNTER
+                if record_dict[label] == record_dict['vote_number']:
+                    values_row.append(1)  # TODO: COUNTER-vote_number
+                if record_dict[label] == record_dict['title']:
+                    values_row.append('')  # TODO: TITLE
+                if record_dict[label] == record_dict['message']:
+                    values_row.append('')  # TODO: MESSAGE
+                if record_dict[label] == record_dict['image']:
+                    values_row.append('')  # TODO: IMAGE
+
+                # values_row.append(record_dict[label])
             row = separator.join(values_row)
             file.write(row + "\n")
