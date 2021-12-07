@@ -21,5 +21,6 @@ def convert_timestamp_to_date_in_data(data):
         row['submission_time'] = date
     return data
 
+
 def get_questions_headers():
     return connection.QUESTION_DATA_HEADER
