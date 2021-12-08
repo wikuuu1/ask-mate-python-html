@@ -1,8 +1,6 @@
 import csv
 import os
-
-import util
-import time
+import random
 
 QUESTION_DATA_FILE_PATH = 'sample_data/question.csv'
 ANSWER_DATA_FILE_PATH = 'sample_data/answer.csv'
@@ -40,25 +38,30 @@ def write_table_to_file(table, file_name, separator='#'):
     else:
         headers = ANSWER_DATA_HEADER
 
-    with open(file_name, "w") as file:
-        for record_dict in table:
-            values_row = []
-            for label in headers:
-                if record_dict[label] == record_dict['id']:
-                    values_row.append(util.generate_id())
-                if record_dict[label] == record_dict['submission_time']:
-                    values_row.append(int(time.time()))
-                if record_dict[label] == record_dict['view_number']:
-                    values_row.append(1)  # TODO: COUNTER
-                if record_dict[label] == record_dict['vote_number']:
-                    values_row.append(1)  # TODO: COUNTER-vote_number
-                if record_dict[label] == record_dict['title']:
-                    values_row.append('')  # TODO: TITLE
-                if record_dict[label] == record_dict['message']:
-                    values_row.append('')  # TODO: MESSAGE
-                if record_dict[label] == record_dict['image']:
-                    values_row.append('')  # TODO: IMAGE
+    with open(file_name, "a") as file:
+        record_dict = table
+        values_row = []
+        for label in headers:
+            values_row.append(record_dict[label])
+        row = separator.join(values_row)
+        file.write(row + "\n")
 
-                # values_row.append(record_dict[label])
-            row = separator.join(values_row)
-            file.write(row + "\n")
+
+def generate_id():
+    """         number_of_small_letters=4,
+                number_of_capital_letters=2,
+                number_of_digits=2,
+    """
+    id_list = []
+    for i in range(4):
+        id_list.append(chr(random.randint(97, 122)))
+    for i in range(2):
+        id_list.append(chr(random.randint(65, 90)))
+    for i in range(2):
+        id_list.append(random.randint(0, 9))
+    random.shuffle(id_list)
+    new_id = ""
+    for i in id_list:
+        new_id += str(i)
+
+    return new_id

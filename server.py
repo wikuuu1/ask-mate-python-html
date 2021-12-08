@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import data_manager
 import connection
 from data_manager import ASCENDING, DESCENDING
+import time
 
 app = Flask(__name__)
 display_dict = {}
@@ -42,22 +43,24 @@ def list_questions():
 @app.route("/question/<question_id>")
 def route_display_question(question_id):
     display_dict[question_id] += 1
-    pass
+    # users_questions = data_manager.get_all_questions()
+    # headers_list = data_manager.get_questions_headers()
+
+    return render_template('display_question.html')
 
 
 @app.route("/add-question", methods=["GET", "POST"])
 def route_ask_question():
-    #TODO: ALL TO CHECK, FIND THE BUG
+    # TODO: ALL TO CHECK, FIND THE BUG
     if request.method == "POST":
-        users_questions = data_manager.get_all_questions()
-        headers_list = data_manager.get_questions_headers()
-
-        new_question = {}
-        for header in headers_list:
-            new_question[header] = request.form[header]
-
-        users_questions.append(new_question)
-        connection.write_table_to_file(users_questions, 'question.csv')
+        unique_id = str(connection.generate_id())
+        submission_time_unix_format = str(int(time.time()))
+        question_title = request.form['new_question']
+        question_description = request.form['question_description']
+        table = {'id': unique_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
+                 'vote_number': '0', 'title': question_title,
+                 'message': question_description, 'image': 'image'}
+        connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
         return redirect("/")
 
     return render_template('add_question.html')
