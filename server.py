@@ -3,6 +3,7 @@ import data_manager
 import connection
 from data_manager import ASCENDING, DESCENDING
 import time
+import util
 
 app = Flask(__name__)
 display_dict = {}
@@ -49,18 +50,17 @@ def route_display_question(question_id):
     return render_template('display_question.html')
 
 
-@app.route("/add-question", methods=["GET", "POST"])
+@app.route("/add-question", methods=["GET", "POST"]) # TODO: osobno metody
 def route_ask_question():
-    # TODO: ALL TO CHECK, FIND THE BUG
     if request.method == "POST":
-        unique_id = str(connection.generate_id())
+        unique_id = str(util.generate_id())
         submission_time_unix_format = str(int(time.time()))
         question_title = request.form['new_question']
         question_description = request.form['question_description']
         table = {'id': unique_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
                  'vote_number': '0', 'title': question_title,
                  'message': question_description, 'image': 'image'}
-        connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+        connection.write_data_row_to_file(table, connection.QUESTION_DATA_FILE_PATH)
         return redirect("/")
 
     return render_template('add_question.html')

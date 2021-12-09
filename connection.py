@@ -38,6 +38,21 @@ def write_table_to_file(table, file_name, separator='#'):
     else:
         headers = ANSWER_DATA_HEADER
 
+    with open(file_name, "w") as file:
+        for record_dict in table:
+            values_row = []
+            for label in headers:
+                values_row.append(record_dict[label])
+            row = separator.join(values_row)
+            file.write(row + "\n")
+
+
+def write_data_row_to_file(table, file_name, separator='#'): # TODO: enter zamienic na znak
+    if file_name == QUESTION_DATA_FILE_PATH:
+        headers = QUESTION_DATA_HEADER
+    else:
+        headers = ANSWER_DATA_HEADER
+
     with open(file_name, "a") as file:
         record_dict = table
         values_row = []
@@ -45,23 +60,3 @@ def write_table_to_file(table, file_name, separator='#'):
             values_row.append(record_dict[label])
         row = separator.join(values_row)
         file.write(row + "\n")
-
-
-def generate_id():
-    """         number_of_small_letters=4,
-                number_of_capital_letters=2,
-                number_of_digits=2,
-    """
-    id_list = []
-    for i in range(4):
-        id_list.append(chr(random.randint(97, 122)))
-    for i in range(2):
-        id_list.append(chr(random.randint(65, 90)))
-    for i in range(2):
-        id_list.append(random.randint(0, 9))
-    random.shuffle(id_list)
-    new_id = ""
-    for i in id_list:
-        new_id += str(i)
-
-    return new_id
