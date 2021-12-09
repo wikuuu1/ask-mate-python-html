@@ -1,3 +1,6 @@
+import random
+
+
 def generate_id():
     """         number_of_small_letters=4,
                 number_of_capital_letters=2,

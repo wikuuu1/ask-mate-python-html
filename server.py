@@ -50,19 +50,21 @@ def route_display_question(question_id):
     return render_template('display_question.html')
 
 
-@app.route("/add-question", methods=["GET", "POST"]) # TODO: osobno metody
-def route_ask_question():
-    if request.method == "POST":
-        unique_id = str(util.generate_id())
-        submission_time_unix_format = str(int(time.time()))
-        question_title = request.form['new_question']
-        question_description = request.form['question_description']
-        table = {'id': unique_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
-                 'vote_number': '0', 'title': question_title,
-                 'message': question_description, 'image': 'image'}
-        connection.write_data_row_to_file(table, connection.QUESTION_DATA_FILE_PATH)
-        return redirect("/")
+@app.route("/add-question", methods=["POST"])
+def route_create_new_question():
+    unique_id = str(util.generate_id())
+    submission_time_unix_format = str(int(time.time()))
+    question_title = request.form['new_question']
+    question_description = request.form['question_description']
+    table = {'id': unique_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
+             'vote_number': '0', 'title': question_title,
+             'message': question_description, 'image': 'image'}
+    connection.write_data_row_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+    return redirect("/")
 
+
+@app.route("/add-question", methods=["GET"])
+def route_ask_question():
     return render_template('add_question.html')
 
 
