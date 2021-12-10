@@ -19,3 +19,17 @@ def generate_id():
         new_id += str(i)
 
     return new_id
+
+
+def find_question_in_dictionary(table, id):
+    for dictionary in table:
+        if dictionary['id'] == id:
+            return dictionary
+
+
+def increase_view_number(table, id):
+    for dictionary in table:
+        if dictionary['id'] == id:
+            dictionary['view_number'] = int(dictionary['view_number']) + 1
+            dictionary['view_number'] = str(dictionary['view_number'])
+            return table
