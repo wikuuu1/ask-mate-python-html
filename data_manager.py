@@ -14,7 +14,7 @@ def get_all_answers():
 
 
 def write_answer_to_file(data_row):
-    connection.write_data_row_to_file(data_row, connection.ANSWER_DATA_FILE_PATH)
+    return connection.write_data_row_to_file(data_row, connection.ANSWER_DATA_FILE_PATH)
 
 
 def sort_data(data, direction, ordering_key):
