@@ -9,6 +9,14 @@ def get_all_questions():
     return connection.get_all_data_from_file(connection.QUESTION_DATA_FILE_PATH)
 
 
+def get_all_answers():
+    return connection.get_all_data_from_file(connection.ANSWER_DATA_FILE_PATH)
+
+
+def write_answer_to_file(data_row):
+    connection.write_data_row_to_file(data_row, connection.ANSWER_DATA_FILE_PATH)
+
+
 def sort_data(data, direction, ordering_key):
     for _ in range(len(data)):
         for i, _ in enumerate(range(len(data)-1)):

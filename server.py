@@ -68,5 +68,17 @@ def route_ask_question():
     return render_template('add_question.html')
 
 
+@app.route("/question/<question_id>/new-answer", methods=['POST'])
+def route_new_answer(question_id):
+    answer_id = util.generate_id()
+    votes = 0
+    timestamp = str(int(time.time()))
+    message = request.form["message"]
+    image = "image"
+    new_data_row = {"id":answer_id, 'vote_number':votes, 'submission_time':timestamp, 'question_id':question_id, 'message':message, 'image':image}
+    data_manager.write_answer_to_file(new_data_row)
+    redirect(f"/question/{question_id}")
+
+
 if __name__ == "__main__":
     app.run(debug=True)

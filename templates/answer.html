@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Answer the question{% endblock %}
+
+{% block content %}
+
+    <h1>Answer</h1>
+{#    <h5><a href="{{ url_for('route_new_answer') }}">Add new answer</a></h5><br>#}
+
+    <form  action="/question/{{ question['id'] }}/new-answer" method="POST">
+
+        <p>Your answer: </p>
+        <p>Message<input type="text" name="message" /></p>
+        <button type="submit" value="submit"><a href="">Submit</a></button>
+
+    </form>
+
+
+{% endblock %}
