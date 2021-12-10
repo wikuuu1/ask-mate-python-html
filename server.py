@@ -53,10 +53,31 @@ def route_display_question(question_id):
                            question=question_to_display)
 
 
-# @app.route("/question/<question_id>/delete")
-# def route_display_question(question_id):
-#
-#     return redirect("/")
+@app.route("/question/<question_id>/delete")
+def delete_question(question_id):
+    users_questions = data_manager.get_all_questions()
+    question_to_delete = util.delete_question(users_questions, question_id)
+    connection.write_table_to_file(question_to_delete, connection.QUESTION_DATA_FILE_PATH)
+
+    return redirect("/")
+
+
+@app.route("/question/<question_id>/edit", methods=["POST"])
+def edit_question(question_id):
+    users_questions = data_manager.get_all_questions()
+    title = request.form['edited_question']
+    message = request.form['edited_description']
+    table = util.edit_question(users_questions, question_id, title, message)
+    connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+
+    return redirect("/")
+
+
+@app.route("/question/<question_id>/edit", methods=["GET"])
+def edit_question_get(question_id):
+    users_questions = data_manager.get_all_questions()
+    question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
+    return render_template('edit_question.html', question=question_to_edit)
 
 
 @app.route("/add-question", methods=["POST"])
