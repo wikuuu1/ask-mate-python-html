@@ -13,8 +13,16 @@ def get_all_answers():
     return connection.get_all_data_from_file(connection.ANSWER_DATA_FILE_PATH)
 
 
-def write_answer_to_file(data_row):
-    return connection.write_data_row_to_file(data_row, connection.ANSWER_DATA_FILE_PATH)
+def write_answer_to_file(new_data_row):
+    return connection.write_data_row_to_file(new_data_row, connection.ANSWER_DATA_FILE_PATH)
+
+
+def write_question_to_file(table):
+    return connection.write_data_row_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+
+
+def overwrite_question_in_file(table):
+    return connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
 
 
 def sort_data(data, direction, ordering_key):

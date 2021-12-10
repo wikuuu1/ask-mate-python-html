@@ -3,17 +3,12 @@
 {% block title %}Answer the question{% endblock %}
 
 {% block content %}
-
-    <h1>Answer</h1>
-{#    <h5><a href="{{ url_for('route_new_answer') }}">Add new answer</a></h5><br>#}
-
-    <form  action="/question/{{ question['id'] }}/new-answer" method="POST">
-
-        <p>Your answer: </p>
-        <p>Message<input type="text" name="message" /></p>
-        <button type="submit" value="submit"><a href="">Submit</a></button>
-
-    </form>
-
+    <h1>Choosen question:<br>{{ question['message'] }}</h1>
+    <form action="/question/{{ question['id'] }}/new-answer" method="POST">
+    <h2>Add an answer to this question:</h2>
+            <label for="answer_description">Answer to the question:</label><br>
+            <textarea name="answer_description" id="answer_description" rows="10" cols="30" style="resize: none"></textarea><br><br>
+            <input type="submit" value="Add your answer">
+        </form>
 
 {% endblock %}

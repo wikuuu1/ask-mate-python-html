@@ -43,21 +43,22 @@ def list_questions():
 @app.route("/question/<question_id>")
 def route_display_question(question_id):
     users_questions = data_manager.get_all_questions()
-    # headers_list = data_manager.get_questions_headers()
     table = util.increase_view_number(users_questions, question_id)
     connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
     questions_converted = data_manager.convert_timestamp_to_date_in_data(users_questions)
     question_to_display = util.find_question_in_dictionary(questions_converted, question_id)
+    all_answers = data_manager.get_all_answers()
+    users_answer = util.find_answers_for_question(all_answers, question_id)
 
     return render_template('display_question.html',
-                           question=question_to_display)
+                           question=question_to_display, users_answer=users_answer)
 
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
     users_questions = data_manager.get_all_questions()
     question_to_delete = util.delete_question(users_questions, question_id)
-    connection.write_table_to_file(question_to_delete, connection.QUESTION_DATA_FILE_PATH)
+    data_manager.overwrite_question_in_file(question_to_delete)
 
     return redirect("/")
 
@@ -68,7 +69,7 @@ def edit_question(question_id):
     title = request.form['edited_question']
     message = request.form['edited_description']
     table = util.edit_question(users_questions, question_id, title, message)
-    connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+    data_manager.overwrite_question_in_file(table)
 
     return redirect("/")
 
@@ -89,7 +90,7 @@ def route_create_new_question():
     table = {'id': unique_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
              'vote_number': '0', 'title': question_title,
              'message': question_description, 'image': 'image'}
-    connection.write_data_row_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+    data_manager.write_question_to_file(table)
     return redirect("/")
 
 
@@ -98,16 +99,26 @@ def route_ask_question():
     return render_template('add_question.html')
 
 
-@app.route("/question/<question_id>/new-answer", methods=['POST'])
+@app.route("/question/<question_id>/new-answer", methods=["POST"])
 def route_new_answer(question_id):
-    answer_id = util.generate_id()
-    votes = 0
+    answer_id = str(util.generate_id())
     timestamp = str(int(time.time()))
-    message = request.form["message"]
+    answer = request.form['answer_description']
     image = "image"
-    new_data_row = {"id":answer_id, 'vote_number':votes, 'submission_time':timestamp, 'question_id':question_id, 'message':message, 'image':image}
+    new_data_row = {"id": answer_id, 'submission_time': timestamp, 'vote_number': '0', 'question_id': question_id,
+                    'message': answer, 'image': image}
     data_manager.write_answer_to_file(new_data_row)
-    redirect(f"/question/{question_id}")
+
+    return redirect(f'/question/{question_id}')
+
+
+@app.route("/question/<question_id>/new-answer", methods=["GET"])
+def add_an_answer(question_id):
+    users_answer = data_manager.get_all_answers()
+    users_questions = data_manager.get_all_questions()
+    question_to_answer = util.find_question_in_dictionary(users_answer, question_id)
+    question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
+    return render_template('answer.html', answer=question_to_answer, question=question_to_edit)
 
 
 if __name__ == "__main__":
