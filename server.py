@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 import data_manager
 import connection
 from data_manager import ASCENDING, DESCENDING
@@ -6,7 +6,6 @@ import time
 import util
 
 app = Flask(__name__)
-display_dict = {}
 
 ORDER_DIRECTION = 'order_direction'
 ORDER_DIRECTIONS = {ASCENDING: 'Ascending', DESCENDING: 'Descending'}
@@ -43,11 +42,42 @@ def list_questions():
 
 @app.route("/question/<question_id>")
 def route_display_question(question_id):
-    display_dict[question_id] += 1
-    # users_questions = data_manager.get_all_questions()
+    users_questions = data_manager.get_all_questions()
     # headers_list = data_manager.get_questions_headers()
+    table = util.increase_view_number(users_questions, question_id)
+    connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+    questions_converted = data_manager.convert_timestamp_to_date_in_data(users_questions)
+    question_to_display = util.find_question_in_dictionary(questions_converted, question_id)
 
-    return render_template('display_question.html')
+    return render_template('display_question.html',
+                           question=question_to_display)
+
+
+@app.route("/question/<question_id>/delete")
+def delete_question(question_id):
+    users_questions = data_manager.get_all_questions()
+    question_to_delete = util.delete_question(users_questions, question_id)
+    connection.write_table_to_file(question_to_delete, connection.QUESTION_DATA_FILE_PATH)
+
+    return redirect("/")
+
+
+@app.route("/question/<question_id>/edit", methods=["POST"])
+def edit_question(question_id):
+    users_questions = data_manager.get_all_questions()
+    title = request.form['edited_question']
+    message = request.form['edited_description']
+    table = util.edit_question(users_questions, question_id, title, message)
+    connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+
+    return redirect("/")
+
+
+@app.route("/question/<question_id>/edit", methods=["GET"])
+def edit_question_get(question_id):
+    users_questions = data_manager.get_all_questions()
+    question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
+    return render_template('edit_question.html', question=question_to_edit)
 
 
 @app.route("/add-question", methods=["POST"])

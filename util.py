@@ -19,3 +19,34 @@ def generate_id():
         new_id += str(i)
 
     return new_id
+
+
+def find_question_in_dictionary(table, id):
+    for dictionary in table:
+        if dictionary['id'] == id:
+            return dictionary
+
+
+def increase_view_number(table, id):
+    for dictionary in table:
+        if dictionary['id'] == id:
+            dictionary['view_number'] = int(dictionary['view_number']) + 1
+            dictionary['view_number'] = str(dictionary['view_number'])
+            return table
+
+
+def delete_question(table, id):
+    dictionary_to_remove = 0
+    for index, dictionary in enumerate(table):
+        if dictionary['id'] == id:
+            dictionary_to_remove = dictionary
+    table.remove(dictionary_to_remove)
+    return table
+
+
+def edit_question(table, id, title, message):
+    for dictionary in table:
+        if dictionary['id'] == id:
+            dictionary['title'] = title
+            dictionary['message'] = message
+    return table
