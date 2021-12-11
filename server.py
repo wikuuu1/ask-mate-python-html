@@ -51,7 +51,7 @@ def route_display_question(question_id):
     users_answer = util.find_answers_for_question(all_answers, question_id)
 
     return render_template('display_question.html',
-                           question=question_to_display, users_answer=users_answer)
+                           question=question_to_display, users_answer=users_answer, answer_headers=connection.ANSWER_DATA_HEADER)
 
 
 @app.route("/question/<question_id>/delete")

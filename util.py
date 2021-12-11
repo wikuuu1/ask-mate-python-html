@@ -55,6 +55,6 @@ def edit_question(table, id, title, message):
 def find_answers_for_question(table, id):
     list_for_answers = []
     for dictionary in table:
-        if dictionary['id'] == id:
+        if dictionary['question_id'] == id:
             list_for_answers.append(dictionary)
     return list_for_answers

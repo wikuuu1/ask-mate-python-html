@@ -42,4 +42,30 @@
         <input type="submit" value="Back to main page">
         </form>
     </div>
+    <br><br>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th style="width:100px; text-align:center">Posted</th>
+            <th style="width:80px; text-align:center">Votes</th>
+            <th style="width:400px; text-align:center">Answer Description</th>
+            <th style="width:150px; text-align:center">Image</th>
+        </tr>
+        <tr><td style="height:10px"></td></tr>
+        </thead>
+        {% for answer in users_answer %}
+            <tr>
+            {% block loop_item scoped %}
+                {% for header in answer_headers %}
+                    {% if header != 'question_id' %}
+                        <td style="text-align:center">{{ answer[header] }}</td>
+                    {% endif %}
+                {% endfor %}
+            {% endblock loop_item %}
+            </tr>
+            <tr><td style="height:10px"></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}

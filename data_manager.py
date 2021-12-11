@@ -28,10 +28,16 @@ def overwrite_question_in_file(table):
 def sort_data(data, direction, ordering_key):
     for _ in range(len(data)):
         for i, _ in enumerate(range(len(data)-1)):
-            if direction == DESCENDING and data[i][ordering_key] < data[i+1][ordering_key]:
-                data[i], data[i+1] = data[i+1], data[i]
-            elif direction == ASCENDING and data[i][ordering_key] > data[i+1][ordering_key]:
-                data[i], data[i+1] = data[i+1], data[i]
+            if ordering_key not in ['submission_time','view_number', 'vote_number']:
+                if direction == DESCENDING and data[i][ordering_key] < data[i+1][ordering_key]:
+                    data[i], data[i+1] = data[i+1], data[i]
+                elif direction == ASCENDING and data[i][ordering_key] > data[i+1][ordering_key]:
+                    data[i], data[i+1] = data[i+1], data[i]
+            else:
+                if direction == DESCENDING and int(data[i][ordering_key]) < int(data[i+1][ordering_key]):
+                    data[i], data[i+1] = data[i+1], data[i]
+                elif direction == ASCENDING and int(data[i][ordering_key]) > int(data[i+1][ordering_key]):
+                    data[i], data[i+1] = data[i+1], data[i]
     return data
 
 
