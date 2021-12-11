@@ -71,7 +71,7 @@ def edit_question(question_id):
     table = util.edit_question(users_questions, question_id, title, message)
     data_manager.overwrite_question_in_file(table)
 
-    return redirect("/")
+    return redirect(f'/question/{question_id}')
 
 
 @app.route("/question/<question_id>/edit", methods=["GET"])
