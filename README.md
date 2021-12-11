@@ -19,12 +19,12 @@ The management is very interested in the agile development methodologies that th
 
 ## Tasks
 
-1. Implement the `/list` page that displays all questions.
-    - The page is available under `/list`.
-    - The data is loaded and displayed from `question.csv`.
-    - The questions are sorted by most recent.
+1. Implement the `/list` page that displays all questions. TAK
+    - The page is available under `/list`. tak
+    - The data is loaded and displayed from `question.csv`. tak
+    - The questions are sorted by most recent. tak
 
-2. Create the `/question/<question_id>` page that displays a question and the answers for it.
+2. Create the `/question/<question_id>` page that displays a question and the answers for it. 
     - The page is available under `/question/<question_id>`.
     - There are links to the question pages from the list page.
     - The page displays the question title and message.

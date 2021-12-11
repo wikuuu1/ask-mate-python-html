@@ -91,7 +91,7 @@ def route_create_new_question():
              'vote_number': '0', 'title': question_title,
              'message': question_description, 'image': 'image'}
     data_manager.write_question_to_file(table)
-    return redirect("/")
+    return redirect(f'/question/{unique_id}')
 
 
 @app.route("/add-question", methods=["GET"])
