@@ -6,11 +6,15 @@ DESCENDING = "descending"
 
 
 def get_all_questions():
-    return connection.get_all_data_from_file(connection.QUESTION_DATA_FILE_PATH)
+    data = connection.get_all_data_from_file(connection.QUESTION_DATA_FILE_PATH)
+    data = convert_utf8_and_timestamp_to_date_in_data(data)
+    return data
 
 
 def get_all_answers():
-    return connection.get_all_data_from_file(connection.ANSWER_DATA_FILE_PATH)
+    data = connection.get_all_data_from_file(connection.ANSWER_DATA_FILE_PATH)
+    data = convert_utf8_and_timestamp_to_date_in_data(data)
+    return data
 
 
 def write_answer_to_file(new_data_row):
@@ -41,11 +45,17 @@ def sort_data(data, direction, ordering_key):
     return data
 
 
-def convert_timestamp_to_date_in_data(data):
+def convert_utf8_and_timestamp_to_date_in_data(data):
     for row in data:
-        timestamp = int(row['submission_time'])
-        date = datetime.fromtimestamp(timestamp)
-        row['submission_time'] = date
+        for key in row:
+            if key == 'submission_time':
+                timestamp = int(row[key])
+                value = datetime.fromtimestamp(timestamp)
+            else:
+                value = row[key].decode()
+
+            row[key] = str(value)
+
     return data
 
 

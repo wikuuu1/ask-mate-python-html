@@ -28,11 +28,9 @@ def list_questions():
     order_direction = request.args.get(ORDER_DIRECTION, DESCENDING)
 
     questions_sorted = data_manager.sort_data(users_questions, order_direction, order_by)
-    print(questions_sorted)
-    questions_converted = data_manager.convert_timestamp_to_date_in_data(questions_sorted)
 
     return render_template('list.html',
-                           questions=questions_converted,
+                           questions=questions_sorted,
                            headers=headers_list,
                            sorting_modes=SORTING_MODES,
                            sorting_direction=ORDER_DIRECTIONS,
@@ -45,13 +43,14 @@ def route_display_question(question_id):
     users_questions = data_manager.get_all_questions()
     table = util.increase_view_number(users_questions, question_id)
     connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
-    questions_converted = data_manager.convert_timestamp_to_date_in_data(users_questions)
-    question_to_display = util.find_question_in_dictionary(questions_converted, question_id)
+    question_to_display = util.find_question_in_dictionary(users_questions, question_id)
     all_answers = data_manager.get_all_answers()
     users_answer = util.find_answers_for_question(all_answers, question_id)
 
     return render_template('display_question.html',
-                           question=question_to_display, users_answer=users_answer, answer_headers=connection.ANSWER_DATA_HEADER)
+                           question=question_to_display,
+                           users_answer=users_answer,
+                           answer_headers=connection.ANSWER_DATA_HEADER)
 
 
 @app.route("/question/<question_id>/delete")
@@ -83,15 +82,26 @@ def edit_question_get(question_id):
 
 @app.route("/add-question", methods=["POST"])
 def route_create_new_question():
-    unique_id = str(util.generate_id())
-    submission_time_unix_format = str(int(time.time()))
-    question_title = request.form['new_question']
-    question_description = request.form['question_description']
-    table = {'id': unique_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
-             'vote_number': '0', 'title': question_title,
-             'message': question_description, 'image': 'image'}
-    data_manager.write_question_to_file(table)
-    return redirect(f'/question/{unique_id}')
+    question_id = str(util.generate_id(request.form))
+    all_questions = data_manager.get_all_questions()
+    duplicate = False
+    for question in all_questions:
+        if question['id'] == question_id:
+            duplicate = True
+
+    if not duplicate:
+        submission_time_unix_format = str(int(time.time()))
+        question_title = request.form['new_question']
+        question_description = request.form['question_description']
+        table = {'id': question_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
+                 'vote_number': '0', 'title': question_title,
+                 'message': question_description, 'image': 'image'}
+
+        data_manager.write_question_to_file(table)
+        return redirect(f'/question/{question_id}')
+
+    else:
+        return redirect("/")
 
 
 @app.route("/add-question", methods=["GET"])
@@ -101,13 +111,20 @@ def route_ask_question():
 
 @app.route("/question/<question_id>/new-answer", methods=["POST"])
 def route_new_answer(question_id):
-    answer_id = str(util.generate_id())
-    timestamp = str(int(time.time()))
-    answer = request.form['answer_description']
-    image = "image"
-    new_data_row = {"id": answer_id, 'submission_time': timestamp, 'vote_number': '0', 'question_id': question_id,
-                    'message': answer, 'image': image}
-    data_manager.write_answer_to_file(new_data_row)
+    answer_id = str(util.generate_id(request.form))
+    all_answers = data_manager.get_all_answers()
+    duplicate = False
+    for answer in all_answers:
+        if answer['id'] == answer_id:
+            duplicate = True
+
+    if not duplicate:
+        timestamp = str(int(time.time()))
+        answer = request.form['answer_description']
+        image = "image"
+        new_data_row = {"id": answer_id, 'submission_time': timestamp, 'vote_number': '0', 'question_id': question_id,
+                        'message': answer, 'image': image}
+        data_manager.write_answer_to_file(new_data_row)
 
     return redirect(f'/question/{question_id}')
 
