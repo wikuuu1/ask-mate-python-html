@@ -18,7 +18,7 @@
                         <select id="order-by" name="order_by">
                             {% for mode in sorting_modes %}
                                 {% if mode == current_ordering %}
-                                    <option selected="selected" label="{{ sorting_modes[mode] }}">{{ mode }}</option>
+                                    <option selected label="{{ sorting_modes[mode] }}">{{ mode }}</option>
                                 {% else %}
                                     <option label="{{ sorting_modes[mode] }}">{{ mode }}</option>
                                 {% endif %}
@@ -29,7 +29,7 @@
                         <select id="order-direction" name="order_direction">
                             {% for direction in sorting_direction %}
                                 {% if direction == current_direction %}
-                                    <option selected="selected" label="{{ sorting_direction[direction] }}">{{ direction }}</option>
+                                    <option selected label="{{ sorting_direction[direction] }}">{{ direction }}</option>
                                 {% else %}
                                     <option label="{{ sorting_direction[direction] }}">{{ direction }}</option>
                                 {% endif %}

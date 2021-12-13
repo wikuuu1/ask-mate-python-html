@@ -1,39 +1,43 @@
 from flask import Flask, render_template, request, redirect
 import data_manager
 import connection
-from data_manager import ASCENDING, DESCENDING
 import time
 import util
 
 app = Flask(__name__)
 
-ORDER_DIRECTION = 'order_direction'
-ORDER_DIRECTIONS = {ASCENDING: 'Ascending', DESCENDING: 'Descending'}
-
 ORDER_BY = 'order_by'
-SORTING_MODES = {'submission_time': 'Time added',
-                 'view_number': 'Views',
-                 'vote_number': 'Votes',
-                 'title': 'Title',
-                 'message': 'Message'}
+SORTING_LABELS = {'submission_time': 'Time added',
+                  'view_number': 'Views',
+                  'vote_number': 'Votes',
+                  'title': 'Title',
+                  'message': 'Message'}
+
+ORDER_DIR = 'order_direction'
+ORDER_DIR_LABELS = {'ascending': 'Ascending',
+                    'descending': 'Descending'}
+
+ORDER_DIR_SQL = {'ascending': 'ASC',
+                 'descending': 'DESC'}
 
 
 @app.route("/")
 @app.route("/list")
 def list_questions():
-    users_questions = data_manager.get_all_questions()
     headers_list = data_manager.get_questions_headers()
-
     order_by = request.args.get(ORDER_BY, 'submission_time')
-    order_direction = request.args.get(ORDER_DIRECTION, DESCENDING)
+    order_dir = request.args.get(ORDER_DIR, 'descending')
+
+    order_dir_sql = ORDER_DIR_SQL[request.args.get(ORDER_DIR, 'descending')]
+    users_questions = data_manager.get_all_questions(order_by, order_dir_sql)
 
     return render_template('list.html',
                            questions=users_questions,
                            headers=headers_list,
-                           sorting_modes=SORTING_MODES,
-                           sorting_direction=ORDER_DIRECTIONS,
+                           sorting_modes=SORTING_LABELS,
+                           sorting_direction=ORDER_DIR_LABELS,
                            current_ordering=order_by,
-                           current_direction=order_direction)
+                           current_direction=order_dir)
 
 
 @app.route("/question/<question_id>")
