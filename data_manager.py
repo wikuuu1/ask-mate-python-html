@@ -1,12 +1,20 @@
 import connection
+import database_common
 from datetime import datetime
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
 
 ASCENDING = "ascending"
 DESCENDING = "descending"
 
 
-def get_all_questions():
-    return connection.get_all_data_from_file(connection.QUESTION_DATA_FILE_PATH)
+@database_common.connection_handler
+def get_all_questions(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT *
+        FROM question"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
 def get_all_answers():

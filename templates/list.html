@@ -60,13 +60,13 @@
         {% for question in questions %}
             <tr>
             {% block loop_item scoped %}
-                {% for header in headers %}
-                    {% if header == 'title' %}
-                        <td style="text-align:center"><a href="/question/{{question[headers[0]]}}">{{ question[header] }}</a></td>
-                    {% else %}
-                        <td style="text-align:center">{{ question[header] }}</td>
-                    {%  endif %}
-                {% endfor %}
+                <td style="text-align:center">{{ question.id }}</td>
+                <td style="text-align:center">{{ question.submission_time }}</td>
+                <td style="text-align:center">{{ question.view_number }}</td>
+                <td style="text-align:center">{{ question.vote_number }}</td>
+                <td style="text-align:center"><a href="/question/{{question.title}}">{{ question.title }}</a></td>
+                <td style="text-align:center">{{ question.message }}</td>
+                <td style="text-align:center">{{ question.image }}</td>
             {% endblock loop_item %}
             </tr>
             <tr><td style="height:10px"></td></tr>

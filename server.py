@@ -27,12 +27,10 @@ def list_questions():
     order_by = request.args.get(ORDER_BY, 'submission_time')
     order_direction = request.args.get(ORDER_DIRECTION, DESCENDING)
 
-    questions_sorted = data_manager.sort_data(users_questions, order_direction, order_by)
-    print(questions_sorted)
-    questions_converted = data_manager.convert_timestamp_to_date_in_data(questions_sorted)
+    print(users_questions[0][headers_list[0]])
 
     return render_template('list.html',
-                           questions=questions_converted,
+                           questions=users_questions,
                            headers=headers_list,
                            sorting_modes=SORTING_MODES,
                            sorting_direction=ORDER_DIRECTIONS,
