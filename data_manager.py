@@ -53,4 +53,8 @@ def convert_timestamp_to_date_in_data(data):
 
 
 def get_questions_headers():
-    return connection.QUESTION_DATA_HEADER
+    return QUESTION_DATA_HEADER
+
+
+def get_answers_headers():
+    return ANSWER_DATA_HEADER
