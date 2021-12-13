@@ -27,8 +27,6 @@ def list_questions():
     order_by = request.args.get(ORDER_BY, 'submission_time')
     order_direction = request.args.get(ORDER_DIRECTION, DESCENDING)
 
-    print(users_questions[0][headers_list[0]])
-
     return render_template('list.html',
                            questions=users_questions,
                            headers=headers_list,

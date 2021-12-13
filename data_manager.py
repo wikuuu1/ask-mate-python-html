@@ -2,18 +2,22 @@ import connection
 import database_common
 from datetime import datetime
 from psycopg2 import sql
-from psycopg2.extras import RealDictCursor
+from psycopg2.extras import DictCursor
 
 ASCENDING = "ascending"
 DESCENDING = "descending"
 
+QUESTION_DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+
 
 @database_common.connection_handler
-def get_all_questions(cursor: RealDictCursor) -> list:
+def get_all_questions(cursor: DictCursor) -> list:
     query = """
         SELECT *
         FROM question"""
     cursor.execute(query)
+
     return cursor.fetchall()
 
 
