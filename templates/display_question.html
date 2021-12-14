@@ -1,71 +1,122 @@
 {% extends 'base.html' %}
 {% block title%}Add new question{% endblock %}
 {% block content %}
-    <div>
-        <div id="title" style="width: 60%;float: left">
-            <h1>{{ question["title"] }}</h1>
+
+    <div id="question-container">
+
+        <div id="header-container">
+            <div id="question-id-container">
+                #{{ question.id }}
+                <br>
+                {{ question.submission_time }}
+            </div>
+            <div id="question-title-container">
+                {{ question.title }}
+            </div>
         </div>
-        <div id="id" style="width: 40%;float: left">
-            <h1>ID: {{ question["id"] }}</h1><br><br>
+
+        <div id="message-container">
+            <div id="question-views-container">
+                Views: {{ question.view_number }}
+                <br>
+                Votes: {{ question.vote_number }}
+            </div>
+            <div id="question-message-container">
+                {{ question.message }}
+            </div>
+            <div id="question-image-container">
+                {{ question.image }}
+            </div>
         </div>
-        <div id="submission_time" style="width: 20%;float: left;margin-bottom: 30px">
-            {{ question["submission_time"] }}
+
+        <div id="options-container">
+            <div id="add-answer-container">
+                <a href="{{ url_for('get_new_answer', question_id=question.id) }}">
+                    <button type="submit">Add new answer</button>
+                </a>
+            </div>
+            <div id="edit-question-container">
+                <a href="{{ url_for('get_edit_question', question_id=question.id) }}">
+                    <button type="submit">Edit question</button>
+                </a>
+            </div>
+            <div id="delete-question-container">
+                <a href="{{ url_for('delete_question', question_id=question.id) }}">
+                    <button type="submit">Delete question</button>
+                </a>
+            </div>
         </div>
-        <div id="view_number" style="width: 20%;float: left;margin-bottom: 30px">
-            Views: {{ question["view_number"] }}
-        </div>
-        <div id="vote_number" style="width: 20%;float: left;margin-bottom: 30px">
-            Votes: {{ question["vote_number"] }}
-        </div>
-        <div id="edit" style="width: 20%;float: left;margin-bottom: 30px">
-            <form action="/question/{{ question['id'] }}/edit" method="GET">
-                <input type="submit" value="Edit">
-            </form>
-        </div>
-        <div id="delete" style="width: 20%;float: left;margin-bottom: 30px">
-             <form action="/question/{{ question['id'] }}/delete">
-                <input type="submit" value="Delete">
-             </form>
-        </div>
-        <div id="message" style="width: 100%;float: left;margin-bottom: 30px">
-            <p>{{ question["message"] }}</p>
-        </div>
+
     </div>
-     <div>
-        <form action="/question/{{ question['id'] }}/new-answer">
-        <input type="submit" value="Add an answer">
-        </form>
-    </div>
-    <br>
-    <div style="float: left">
-        <form action="{{ url_for('list_questions') }}">
-        <input type="submit" value="Back to main page">
-        </form>
-    </div>
-    <br><br>
-    <table>
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th style="width:100px; text-align:center">Posted</th>
-            <th style="width:80px; text-align:center">Votes</th>
-            <th style="width:400px; text-align:center">Answer Description</th>
-            <th style="width:150px; text-align:center">Image</th>
-        </tr>
-        <tr><td style="height:10px"></td></tr>
-        </thead>
-        {% for answer in users_answer %}
-            <tr>
-            {% block loop_item scoped %}
-                {% for header in answer_headers %}
-                    {% if header != 'question_id' %}
-                        <td style="text-align:center">{{ answer[header] }}</td>
-                    {% endif %}
-                {% endfor %}
-            {% endblock loop_item %}
-            </tr>
-            <tr><td style="height:10px"></td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+
+
+
+{#    <div>#}
+{#        <div id="title" style="width: 60%;float: left">#}
+{#            <h1>{{ question["title"] }}</h1>#}
+{#        </div>#}
+{#        <div id="id" style="width: 40%;float: left">#}
+{#            <h1>ID: {{ question["id"] }}</h1><br><br>#}
+{#        </div>#}
+{#        <div id="submission_time" style="width: 20%;float: left;margin-bottom: 30px">#}
+{#            {{ question["submission_time"] }}#}
+{#        </div>#}
+{#        <div id="view_number" style="width: 20%;float: left;margin-bottom: 30px">#}
+{#            Views: {{ question["view_number"] }}#}
+{#        </div>#}
+{#        <div id="vote_number" style="width: 20%;float: left;margin-bottom: 30px">#}
+{#            Votes: {{ question["vote_number"] }}#}
+{#        </div>#}
+{#        <div id="edit" style="width: 20%;float: left;margin-bottom: 30px">#}
+{#            <form action="/question/{{ question['id'] }}/edit" method="GET">#}
+{#                <input type="submit" value="Edit">#}
+{#            </form>#}
+{#        </div>#}
+{#        <div id="delete" style="width: 20%;float: left;margin-bottom: 30px">#}
+{#             <form action="/question/{{ question['id'] }}/delete">#}
+{#                <input type="submit" value="Delete">#}
+{#             </form>#}
+{#        </div>#}
+{#        <div id="message" style="width: 100%;float: left;margin-bottom: 30px">#}
+{#            <p>{{ question["message"] }}</p>#}
+{#        </div>#}
+{#    </div>#}
+{#     <div>#}
+{#        <form action="/question/{{ question['id'] }}/new-answer">#}
+{#        <input type="submit" value="Add an answer">#}
+{#        </form>#}
+{#    </div>#}
+{#    <br>#}
+{#    <div style="float: left">#}
+{#        <form action="{{ url_for('list_questions') }}">#}
+{#        <input type="submit" value="Back to main page">#}
+{#        </form>#}
+{#    </div>#}
+{#    <br><br>#}
+{#    <table>#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Id</th>#}
+{#            <th style="width:100px; text-align:center">Posted</th>#}
+{#            <th style="width:80px; text-align:center">Votes</th>#}
+{#            <th style="width:400px; text-align:center">Answer Description</th>#}
+{#            <th style="width:150px; text-align:center">Image</th>#}
+{#        </tr>#}
+{#        <tr><td style="height:10px"></td></tr>#}
+{#        </thead>#}
+{#        {% for answer in users_answer %}#}
+{#            <tr>#}
+{#            {% block loop_item scoped %}#}
+{#                {% for header in answer_headers %}#}
+{#                    {% if header != 'question_id' %}#}
+{#                        <td style="text-align:center">{{ answer[header] }}</td>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#            {% endblock loop_item %}#}
+{#            </tr>#}
+{#            <tr><td style="height:10px"></td></tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
 {% endblock content %}

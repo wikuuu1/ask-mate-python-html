@@ -9,7 +9,7 @@ ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'me
 
 
 @database_common.connection_handler
-def get_all_questions(cursor: DictCursor, order_by: str, order_dir: str) -> list:
+def get_all_questions_sorted(cursor: DictCursor, order_by: str, order_dir: str) -> list:
     query = """
         SELECT *
         FROM question
@@ -29,6 +29,16 @@ def get_all_answers(cursor: DictCursor) -> list:
     cursor.execute(query)
 
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_selected_question(cursor, question_id: str) -> list:
+    query = """
+            SELECT *
+            FROM question
+            WHERE id=%(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
 
 
 def write_answer_to_file(new_data_row):
