@@ -41,6 +41,16 @@ def get_selected_question(cursor, question_id: str) -> list:
     return cursor.fetchone()
 
 
+@database_common.connection_handler
+def get_answers_for_question(cursor, question_id: str) -> list:
+    query = """
+            SELECT *
+            FROM answer
+            WHERE question_id=%(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchall()
+
+
 def write_answer_to_file(new_data_row):
     return connection.write_data_row_to_file(new_data_row, connection.ANSWER_DATA_FILE_PATH)
 

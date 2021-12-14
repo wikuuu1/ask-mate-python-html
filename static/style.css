@@ -54,20 +54,23 @@
 
 #add-answer-container {
     height: 100%;
-    padding: 15px;
+    padding-top: 15px;
+    padding-left: 15px;
     float: left;
 }
 
 
 #edit-question-container {
     height: 100%;
-    padding: 15px;
+    padding-top: 15px;
+    padding-left: 15px;
     float: left;
 }
 
 
 #delete-question-container {
     height: 100%;
-    padding: 15px;
+    padding-top: 15px;
+    padding-left: 15px;
     float: left;
 }

@@ -46,11 +46,10 @@ def list_questions():
 @app.route("/question/<question_id>")
 def route_display_question(question_id):
     selected_question = data_manager.get_selected_question(question_id)
-    all_answers = data_manager.get_all_answers()
-    users_answer = util.find_answers_for_question(all_answers, question_id)
+    answers_for_question = data_manager.get_answers_for_question(question_id)
 
     return render_template('display_question.html',
-                           question=selected_question, users_answer=users_answer, answer_headers=connection.ANSWER_DATA_HEADER)
+                           question=selected_question, answers=answers_for_question)
 
 
 @app.route("/question/<question_id>/delete")
