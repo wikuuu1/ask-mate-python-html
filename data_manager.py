@@ -51,6 +51,17 @@ def get_answers_for_question(cursor, question_id: str) -> list:
     return cursor.fetchall()
 
 
+@database_common.connection_handler
+def save_question_to_table(cursor, new_table_row):
+    query = """
+            INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+            VALUES (%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s)
+            """
+    cursor.execute(query, {'submission_time': new_table_row[0], 'view_number': new_table_row[1],
+                           'vote_number': new_table_row[2], 'title': new_table_row[3],
+                           'message': new_table_row[4], 'image': new_table_row[5]})
+
+
 def write_answer_to_file(new_data_row):
     return connection.write_data_row_to_file(new_data_row, connection.ANSWER_DATA_FILE_PATH)
 

@@ -3,6 +3,7 @@ import data_manager
 import connection
 import time
 import util
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -81,15 +82,12 @@ def get_edit_question(question_id):
 
 @app.route("/add-question", methods=["POST"])
 def route_create_new_question():
-    unique_id = str(util.generate_id())
-    submission_time_unix_format = str(int(time.time()))
+    submission_time = int(datetime.now())
     question_title = request.form['new_question']
     question_description = request.form['question_description']
-    table = {'id': unique_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
-             'vote_number': '0', 'title': question_title,
-             'message': question_description, 'image': 'image'}
-    data_manager.write_question_to_file(table)
-    return redirect(f'/question/{unique_id}')
+    new_table_row = [submission_time, '0', '0', question_title, question_description, 'image']
+    data_manager.save_question_to_table(new_table_row)
+    return redirect(f'/question/{unique_id}')  #TODO: TRZEBA ZROBIC REDIRECT DO ID Z TABELI QUESTIONS
 
 
 @app.route("/add-question", methods=["GET"])
