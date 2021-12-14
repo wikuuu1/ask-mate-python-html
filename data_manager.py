@@ -13,8 +13,7 @@ def get_all_questions(cursor: DictCursor, order_by: str, order_dir: str) -> list
     query = """
         SELECT *
         FROM question
-        ORDER BY {0}
-        {1}
+        ORDER BY {} {}
         """.format(order_by, order_dir)
 
     cursor.execute(query, {'order_by': order_by, 'order_dir': order_dir})

@@ -28,16 +28,19 @@ def list_questions():
     order_by = request.args.get(ORDER_BY, 'submission_time')
     order_dir = request.args.get(ORDER_DIR, 'descending')
 
-    order_dir_sql = ORDER_DIR_SQL[order_dir]
-    users_questions = data_manager.get_all_questions(order_by, order_dir_sql)
+    if order_by in ORDER_BY_LABELS:
+        order_dir_sql = ORDER_DIR_SQL[order_dir]
+        users_questions = data_manager.get_all_questions(order_by, order_dir_sql)
 
-    return render_template('list.html',
-                           questions=users_questions,
-                           headers=headers_list,
-                           order_by_labels=ORDER_BY_LABELS,
-                           order_dir_labels=ORDER_DIR_LABELS,
-                           current_order_by=order_by,
-                           current_order_dir=order_dir)
+        return render_template('list.html',
+                               questions=users_questions,
+                               headers=headers_list,
+                               order_by_labels=ORDER_BY_LABELS,
+                               order_dir_labels=ORDER_DIR_LABELS,
+                               current_order_by=order_by,
+                               current_order_dir=order_dir)
+
+    return redirect("/")
 
 
 @app.route("/question/<question_id>")
