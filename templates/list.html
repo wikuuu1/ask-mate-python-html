@@ -16,22 +16,22 @@
                 <tr>
                     <td style="text-align: center">
                         <select id="order-by" name="order_by">
-                            {% for mode in sorting_modes %}
-                                {% if mode == current_ordering %}
-                                    <option selected="selected" label="{{ sorting_modes[mode] }}">{{ mode }}</option>
+                            {% for key in order_by_labels %}
+                                {% if key == current_order_by %}
+                                    <option selected label="{{ order_by_labels[key] }}">{{ key }}</option>
                                 {% else %}
-                                    <option label="{{ sorting_modes[mode] }}">{{ mode }}</option>
+                                    <option label="{{ order_by_labels[key] }}">{{ key }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
                     </td>
                     <td style="text-align: center">
                         <select id="order-direction" name="order_direction">
-                            {% for direction in sorting_direction %}
-                                {% if direction == current_direction %}
-                                    <option selected="selected" label="{{ sorting_direction[direction] }}">{{ direction }}</option>
+                            {% for key in order_dir_labels %}
+                                {% if key == current_order_dir %}
+                                    <option selected label="{{ order_dir_labels[key] }}">{{ key }}</option>
                                 {% else %}
-                                    <option label="{{ sorting_direction[direction] }}">{{ direction }}</option>
+                                    <option label="{{ order_dir_labels[key] }}">{{ key }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>

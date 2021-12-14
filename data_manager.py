@@ -1,20 +1,54 @@
 import connection
+import database_common
 from datetime import datetime
+from psycopg2 import sql
+from psycopg2.extras import DictCursor
 
-ASCENDING = "ascending"
-DESCENDING = "descending"
-
-
-def get_all_questions():
-    data = connection.get_all_data_from_file(connection.QUESTION_DATA_FILE_PATH)
-    data = convert_utf8_and_timestamp_to_date_in_data(data)
-    return data
+QUESTION_DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def get_all_answers():
-    data = connection.get_all_data_from_file(connection.ANSWER_DATA_FILE_PATH)
-    data = convert_utf8_and_timestamp_to_date_in_data(data)
-    return data
+@database_common.connection_handler
+def get_all_questions_sorted(cursor: DictCursor, order_by: str, order_dir: str) -> list:
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY {} {}
+        """.format(order_by, order_dir)
+
+    cursor.execute(query, {'order_by': order_by, 'order_dir': order_dir})
+
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_all_answers(cursor: DictCursor) -> list:
+    query = """
+        SELECT *
+        FROM answer"""
+    cursor.execute(query)
+
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_selected_question(cursor, question_id: str) -> list:
+    query = """
+            SELECT *
+            FROM question
+            WHERE id=%(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_answers_for_question(cursor, question_id: str) -> list:
+    query = """
+            SELECT *
+            FROM answer
+            WHERE question_id=%(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchall()
 
 
 def write_answer_to_file(new_data_row):
@@ -29,35 +63,17 @@ def overwrite_question_in_file(table):
     return connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
 
 
-def sort_data(data, direction, ordering_key):
-    for _ in range(len(data)):
-        for i, _ in enumerate(range(len(data)-1)):
-            if ordering_key not in ['submission_time','view_number', 'vote_number']:
-                if direction == DESCENDING and data[i][ordering_key] < data[i+1][ordering_key]:
-                    data[i], data[i+1] = data[i+1], data[i]
-                elif direction == ASCENDING and data[i][ordering_key] > data[i+1][ordering_key]:
-                    data[i], data[i+1] = data[i+1], data[i]
-            else:
-                if direction == DESCENDING and int(data[i][ordering_key]) < int(data[i+1][ordering_key]):
-                    data[i], data[i+1] = data[i+1], data[i]
-                elif direction == ASCENDING and int(data[i][ordering_key]) > int(data[i+1][ordering_key]):
-                    data[i], data[i+1] = data[i+1], data[i]
-    return data
-
-
-def convert_utf8_and_timestamp_to_date_in_data(data):
+def convert_timestamp_to_date_in_data(data):
     for row in data:
-        for key in row:
-            if key == 'submission_time':
-                timestamp = int(row[key])
-                value = datetime.fromtimestamp(timestamp)
-            else:
-                value = row[key].decode()
-
-            row[key] = str(value)
-
+        timestamp = int(row['submission_time'])
+        date = datetime.fromtimestamp(timestamp)
+        row['submission_time'] = date
     return data
 
 
 def get_questions_headers():
-    return connection.QUESTION_DATA_HEADER
+    return QUESTION_DATA_HEADER
+
+
+def get_answers_headers():
+    return ANSWER_DATA_HEADER
