@@ -32,7 +32,7 @@ def get_all_answers(cursor: DictCursor) -> list:
 
 
 @database_common.connection_handler
-def get_selected_question(cursor, question_id: str) -> list:
+def get_question_by_id(cursor, question_id: str) -> list:
     query = """
             SELECT *
             FROM question
@@ -77,8 +77,15 @@ def get_question_id_by_data(cursor, table_row: list):
     return cursor.fetchone()
 
 
-def write_answer_to_file(new_data_row):
-    return connection.write_data_row_to_file(new_data_row, connection.ANSWER_DATA_FILE_PATH)
+@database_common.connection_handler
+def save_answer_to_table(cursor, new_table_row: list):
+    query = """
+                INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+                VALUES (%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s)
+                """
+    cursor.execute(query, {'submission_time': new_table_row[0], 'vote_number': new_table_row[1],
+                           'question_id': new_table_row[2], 'message': new_table_row[3],
+                           'image': new_table_row[4]})
 
 
 def write_question_to_file(table):
