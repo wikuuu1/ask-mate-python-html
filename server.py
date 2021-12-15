@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect
 import data_manager
-import time
+import os
 import util
 from datetime import datetime
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = './static/IMG'
 
 ORDER_BY = 'order_by'
 ORDER_BY_LABELS = {'submission_time': 'Time added',
@@ -53,7 +54,7 @@ def route_display_question(question_id):
 
 
 @app.route("/add-question", methods=["GET"])
-def route_ask_question():
+def route_add_question():
     return render_template('add_question.html')
 
 
@@ -63,8 +64,18 @@ def route_create_new_question():
     submission_time = util.date_to_int(str(actual_time))
     question_title = request.form['new_question']
     question_description = request.form['question_description']
+    path = ""
 
-    new_table_row = [submission_time, '0', '0', question_title, question_description, 'image']
+    try:
+        if 'file1' not in request.files:
+            file1 = request.files['file1']
+            path = os.path.join(app.config['UPLOAD_FOLDER'], file1.filename)
+            file1.save(path)
+
+    except OSError:
+        pass
+
+    new_table_row = [submission_time, '0', '0', question_title, question_description, path]
     data_manager.save_question_to_table(new_table_row)
     question_id = data_manager.get_question_id_by_data(new_table_row)
 
@@ -90,27 +101,22 @@ def route_new_answer(question_id):
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    users_questions = data_manager.get_all_questions_sorted()
-    question_to_delete = util.delete_question(users_questions, question_id)
-    data_manager.overwrite_question_in_file(question_to_delete)
+    data_manager.delete_question_in_file(question_id)
 
     return redirect("/")
 
 
 @app.route("/question/<question_id>/edit", methods=["GET"])
 def get_edit_question(question_id):
-    users_questions = data_manager.get_all_questions_sorted()
-    question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
+    question_to_edit = data_manager.get_question_by_id(question_id)
     return render_template('edit_question.html', question=question_to_edit)
 
 
 @app.route("/question/<question_id>/edit", methods=["POST"])
 def edit_question(question_id):
-    users_questions = data_manager.get_all_questions_sorted()
     title = request.form['edited_question']
     message = request.form['edited_description']
-    table = util.edit_question(users_questions, question_id, title, message)
-    data_manager.overwrite_question_in_file(table)
+    data_manager.edit_question(question_id, title, message)
 
     return redirect(f'/question/{question_id}')
 

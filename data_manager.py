@@ -92,8 +92,23 @@ def write_question_to_file(table):
     return connection.write_data_row_to_file(table, connection.QUESTION_DATA_FILE_PATH)
 
 
-def overwrite_question_in_file(table):
-    return connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+@database_common.connection_handler
+def delete_question_in_file(cursor, question_id):
+    query = """
+                DELETE FROM question
+                WHERE id=%(question_id)s
+                """
+    cursor.execute(query, {'question_id': question_id})
+
+
+@database_common.connection_handler
+def edit_question(cursor, question_id, title, message):
+    query = """
+                UPDATE question
+                SET title=%(title)s, message=%(message)s
+                WHERE id=%(question_id)s 
+                """
+    cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
 
 
 def convert_timestamp_to_date_in_data(data):
