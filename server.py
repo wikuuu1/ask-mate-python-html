@@ -30,7 +30,7 @@ def list_questions():
 
     if order_by in ORDER_BY_LABELS:
         order_dir_sql = ORDER_DIR_SQL[order_dir]
-        users_questions = data_manager.get_all_questions(order_by, order_dir_sql)
+        users_questions = data_manager.get_all_questions_sorted(order_by, order_dir_sql)
 
         return render_template('list.html',
                                questions=users_questions,
@@ -45,21 +45,16 @@ def list_questions():
 
 @app.route("/question/<question_id>")
 def route_display_question(question_id):
-    users_questions = data_manager.get_all_questions()
-    table = util.increase_view_number(users_questions, question_id)
-    connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
-    questions_converted = data_manager.convert_timestamp_to_date_in_data(users_questions)
-    question_to_display = util.find_question_in_dictionary(questions_converted, question_id)
-    all_answers = data_manager.get_all_answers()
-    users_answer = util.find_answers_for_question(all_answers, question_id)
+    selected_question = data_manager.get_selected_question(question_id)
+    answers_for_question = data_manager.get_answers_for_question(question_id)
 
     return render_template('display_question.html',
-                           question=question_to_display, users_answer=users_answer, answer_headers=connection.ANSWER_DATA_HEADER)
+                           question=selected_question, answers=answers_for_question)
 
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    users_questions = data_manager.get_all_questions()
+    users_questions = data_manager.get_all_questions_sorted()
     question_to_delete = util.delete_question(users_questions, question_id)
     data_manager.overwrite_question_in_file(question_to_delete)
 
@@ -68,7 +63,7 @@ def delete_question(question_id):
 
 @app.route("/question/<question_id>/edit", methods=["POST"])
 def edit_question(question_id):
-    users_questions = data_manager.get_all_questions()
+    users_questions = data_manager.get_all_questions_sorted()
     title = request.form['edited_question']
     message = request.form['edited_description']
     table = util.edit_question(users_questions, question_id, title, message)
@@ -78,8 +73,8 @@ def edit_question(question_id):
 
 
 @app.route("/question/<question_id>/edit", methods=["GET"])
-def edit_question_get(question_id):
-    users_questions = data_manager.get_all_questions()
+def get_edit_question(question_id):
+    users_questions = data_manager.get_all_questions_sorted()
     question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
     return render_template('edit_question.html', question=question_to_edit)
 
@@ -116,9 +111,9 @@ def route_new_answer(question_id):
 
 
 @app.route("/question/<question_id>/new-answer", methods=["GET"])
-def add_an_answer(question_id):
+def get_new_answer(question_id):
     users_answer = data_manager.get_all_answers()
-    users_questions = data_manager.get_all_questions()
+    users_questions = data_manager.get_all_questions_sorted()
     question_to_answer = util.find_question_in_dictionary(users_answer, question_id)
     question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
     return render_template('answer.html', answer=question_to_answer, question=question_to_edit)
