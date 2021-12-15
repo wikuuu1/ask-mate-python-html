@@ -52,7 +52,7 @@ def get_answers_for_question(cursor, question_id: str) -> list:
 
 
 @database_common.connection_handler
-def save_question_to_table(cursor, new_table_row):
+def save_question_to_table(cursor, new_table_row: list):
     query = """
             INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
             VALUES (%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s)
@@ -60,6 +60,21 @@ def save_question_to_table(cursor, new_table_row):
     cursor.execute(query, {'submission_time': new_table_row[0], 'view_number': new_table_row[1],
                            'vote_number': new_table_row[2], 'title': new_table_row[3],
                            'message': new_table_row[4], 'image': new_table_row[5]})
+
+
+@database_common.connection_handler
+def get_question_id_by_data(cursor, table_row: list):
+    query = """
+                SELECT id
+                FROM question
+                WHERE submission_time=%(submission_time)s AND view_number=%(view_number)s 
+                AND vote_number=%(vote_number)s AND title=%(title)s 
+                AND message=%(message)s AND image=%(image)s
+                """
+    cursor.execute(query, {'submission_time': table_row[0], 'view_number': table_row[1],
+                           'vote_number': table_row[2], 'title': table_row[3],
+                           'message': table_row[4], 'image': table_row[5]})
+    return cursor.fetchone()
 
 
 def write_answer_to_file(new_data_row):

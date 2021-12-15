@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect
 import data_manager
-import connection
 import time
 import util
 from datetime import datetime
@@ -82,12 +81,15 @@ def get_edit_question(question_id):
 
 @app.route("/add-question", methods=["POST"])
 def route_create_new_question():
-    submission_time = int(datetime.now())
+    submission_time = datetime.now()
     question_title = request.form['new_question']
     question_description = request.form['question_description']
+
     new_table_row = [submission_time, '0', '0', question_title, question_description, 'image']
     data_manager.save_question_to_table(new_table_row)
-    return redirect(f'/question/{unique_id}')  #TODO: TRZEBA ZROBIC REDIRECT DO ID Z TABELI QUESTIONS
+    question_id = data_manager.get_question_id_by_data(new_table_row)
+
+    return redirect(f'/question/{question_id["id"]}')
 
 
 @app.route("/add-question", methods=["GET"])
