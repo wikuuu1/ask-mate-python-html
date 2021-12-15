@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect
 import data_manager
-import connection
-import time
+import os
 import util
+from datetime import datetime
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = './static/IMG'
 
 ORDER_BY = 'order_by'
 ORDER_BY_LABELS = {'submission_time': 'Time added',
@@ -45,78 +46,79 @@ def list_questions():
 
 @app.route("/question/<question_id>")
 def route_display_question(question_id):
-    selected_question = data_manager.get_selected_question(question_id)
+    selected_question = data_manager.get_question_by_id(question_id)
     answers_for_question = data_manager.get_answers_for_question(question_id)
 
     return render_template('display_question.html',
                            question=selected_question, answers=answers_for_question)
 
 
-@app.route("/question/<question_id>/delete")
-def delete_question(question_id):
-    users_questions = data_manager.get_all_questions_sorted()
-    question_to_delete = util.delete_question(users_questions, question_id)
-    data_manager.overwrite_question_in_file(question_to_delete)
-
-    return redirect("/")
-
-
-@app.route("/question/<question_id>/edit", methods=["POST"])
-def edit_question(question_id):
-    users_questions = data_manager.get_all_questions_sorted()
-    title = request.form['edited_question']
-    message = request.form['edited_description']
-    table = util.edit_question(users_questions, question_id, title, message)
-    data_manager.overwrite_question_in_file(table)
-
-    return redirect(f'/question/{question_id}')
-
-
-@app.route("/question/<question_id>/edit", methods=["GET"])
-def get_edit_question(question_id):
-    users_questions = data_manager.get_all_questions_sorted()
-    question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
-    return render_template('edit_question.html', question=question_to_edit)
+@app.route("/add-question", methods=["GET"])
+def route_add_question():
+    return render_template('add_question.html')
 
 
 @app.route("/add-question", methods=["POST"])
 def route_create_new_question():
-    unique_id = str(util.generate_id())
-    submission_time_unix_format = str(int(time.time()))
+    actual_time = datetime.now()
+    submission_time = util.date_to_int(str(actual_time))
     question_title = request.form['new_question']
     question_description = request.form['question_description']
-    table = {'id': unique_id, 'submission_time': submission_time_unix_format, 'view_number': '0',
-             'vote_number': '0', 'title': question_title,
-             'message': question_description, 'image': 'image'}
-    data_manager.write_question_to_file(table)
-    return redirect(f'/question/{unique_id}')
+    path = ""
 
+    try:
+        if 'file1' not in request.files:
+            file1 = request.files['file1']
+            path = os.path.join(app.config['UPLOAD_FOLDER'], file1.filename)
+            file1.save(path)
 
-@app.route("/add-question", methods=["GET"])
-def route_ask_question():
-    return render_template('add_question.html')
+    except OSError:
+        pass
 
+    new_table_row = [submission_time, '0', '0', question_title, question_description, path]
+    data_manager.save_question_to_table(new_table_row)
+    question_id = data_manager.get_question_id_by_data(new_table_row)
 
-@app.route("/question/<question_id>/new-answer", methods=["POST"])
-def route_new_answer(question_id):
-    answer_id = str(util.generate_id())
-    timestamp = str(int(time.time()))
-    answer = request.form['answer_description']
-    image = "image"
-    new_data_row = {"id": answer_id, 'submission_time': timestamp, 'vote_number': '0', 'question_id': question_id,
-                    'message': answer, 'image': image}
-    data_manager.write_answer_to_file(new_data_row)
-
-    return redirect(f'/question/{question_id}')
+    return redirect(f'/question/{question_id["id"]}')
 
 
 @app.route("/question/<question_id>/new-answer", methods=["GET"])
 def get_new_answer(question_id):
-    users_answer = data_manager.get_all_answers()
-    users_questions = data_manager.get_all_questions_sorted()
-    question_to_answer = util.find_question_in_dictionary(users_answer, question_id)
-    question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
-    return render_template('answer.html', answer=question_to_answer, question=question_to_edit)
+    question_to_answer = data_manager.get_question_by_id(question_id)
+    return render_template('answer.html', question=question_to_answer)
+
+
+@app.route("/question/<question_id>/new-answer", methods=["POST"])
+def route_new_answer(question_id):
+    actual_time = datetime.now()
+    submission_time = util.date_to_int(str(actual_time))
+    message = request.form['answer_description']
+    new_data_row = [submission_time, '0', question_id, message, 'image']
+    data_manager.save_answer_to_table(new_data_row)
+
+    return redirect(f'/question/{question_id}')
+
+
+@app.route("/question/<question_id>/delete")
+def delete_question(question_id):
+    data_manager.delete_question_in_file(question_id)
+
+    return redirect("/")
+
+
+@app.route("/question/<question_id>/edit", methods=["GET"])
+def get_edit_question(question_id):
+    question_to_edit = data_manager.get_question_by_id(question_id)
+    return render_template('edit_question.html', question=question_to_edit)
+
+
+@app.route("/question/<question_id>/edit", methods=["POST"])
+def edit_question(question_id):
+    title = request.form['edited_question']
+    message = request.form['edited_description']
+    data_manager.edit_question(question_id, title, message)
+
+    return redirect(f'/question/{question_id}')
 
 
 if __name__ == "__main__":

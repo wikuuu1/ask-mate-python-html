@@ -32,7 +32,7 @@ def get_all_answers(cursor: DictCursor) -> list:
 
 
 @database_common.connection_handler
-def get_selected_question(cursor, question_id: str) -> list:
+def get_question_by_id(cursor, question_id: str) -> list:
     query = """
             SELECT *
             FROM question
@@ -51,16 +51,64 @@ def get_answers_for_question(cursor, question_id: str) -> list:
     return cursor.fetchall()
 
 
-def write_answer_to_file(new_data_row):
-    return connection.write_data_row_to_file(new_data_row, connection.ANSWER_DATA_FILE_PATH)
+@database_common.connection_handler
+def save_question_to_table(cursor, new_table_row: list):
+    query = """
+            INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+            VALUES (%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s)
+            """
+    cursor.execute(query, {'submission_time': new_table_row[0], 'view_number': new_table_row[1],
+                           'vote_number': new_table_row[2], 'title': new_table_row[3],
+                           'message': new_table_row[4], 'image': new_table_row[5]})
+
+
+@database_common.connection_handler
+def get_question_id_by_data(cursor, table_row: list):
+    query = """
+                SELECT id
+                FROM question
+                WHERE submission_time=%(submission_time)s AND view_number=%(view_number)s 
+                AND vote_number=%(vote_number)s AND title=%(title)s 
+                AND message=%(message)s AND image=%(image)s
+                """
+    cursor.execute(query, {'submission_time': table_row[0], 'view_number': table_row[1],
+                           'vote_number': table_row[2], 'title': table_row[3],
+                           'message': table_row[4], 'image': table_row[5]})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def save_answer_to_table(cursor, new_table_row: list):
+    query = """
+                INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+                VALUES (%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s)
+                """
+    cursor.execute(query, {'submission_time': new_table_row[0], 'vote_number': new_table_row[1],
+                           'question_id': new_table_row[2], 'message': new_table_row[3],
+                           'image': new_table_row[4]})
 
 
 def write_question_to_file(table):
     return connection.write_data_row_to_file(table, connection.QUESTION_DATA_FILE_PATH)
 
 
-def overwrite_question_in_file(table):
-    return connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+@database_common.connection_handler
+def delete_question_in_file(cursor, question_id):
+    query = """
+                DELETE FROM question
+                WHERE id=%(question_id)s
+                """
+    cursor.execute(query, {'question_id': question_id})
+
+
+@database_common.connection_handler
+def edit_question(cursor, question_id, title, message):
+    query = """
+                UPDATE question
+                SET title=%(title)s, message=%(message)s
+                WHERE id=%(question_id)s 
+                """
+    cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
 
 
 def convert_timestamp_to_date_in_data(data):
