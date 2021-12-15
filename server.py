@@ -59,7 +59,8 @@ def route_ask_question():
 
 @app.route("/add-question", methods=["POST"])
 def route_create_new_question():
-    submission_time = datetime.now()
+    actual_time = datetime.now()
+    submission_time = util.date_to_int(str(actual_time))
     question_title = request.form['new_question']
     question_description = request.form['question_description']
 
@@ -78,7 +79,8 @@ def get_new_answer(question_id):
 
 @app.route("/question/<question_id>/new-answer", methods=["POST"])
 def route_new_answer(question_id):
-    submission_time = datetime.now()
+    actual_time = datetime.now()
+    submission_time = util.date_to_int(str(actual_time))
     message = request.form['answer_description']
     new_data_row = [submission_time, '0', question_id, message, 'image']
     data_manager.save_answer_to_table(new_data_row)
@@ -95,6 +97,13 @@ def delete_question(question_id):
     return redirect("/")
 
 
+@app.route("/question/<question_id>/edit", methods=["GET"])
+def get_edit_question(question_id):
+    users_questions = data_manager.get_all_questions_sorted()
+    question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
+    return render_template('edit_question.html', question=question_to_edit)
+
+
 @app.route("/question/<question_id>/edit", methods=["POST"])
 def edit_question(question_id):
     users_questions = data_manager.get_all_questions_sorted()
@@ -104,13 +113,6 @@ def edit_question(question_id):
     data_manager.overwrite_question_in_file(table)
 
     return redirect(f'/question/{question_id}')
-
-
-@app.route("/question/<question_id>/edit", methods=["GET"])
-def get_edit_question(question_id):
-    users_questions = data_manager.get_all_questions_sorted()
-    question_to_edit = util.find_question_in_dictionary(users_questions, question_id)
-    return render_template('edit_question.html', question=question_to_edit)
 
 
 if __name__ == "__main__":
