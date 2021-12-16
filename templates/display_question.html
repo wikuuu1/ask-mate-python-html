@@ -84,6 +84,11 @@
                     <button type="submit">Delete answer</button>
                 </a>
             </div>
+            <div id="edit-answer-container">
+                <a href="{{ url_for('edit_answer', answer_id=answer.id)}}">
+                    <button type="submit">Edit an answer</button>
+                </a>
+            </div>
 
 
     {% endfor %}

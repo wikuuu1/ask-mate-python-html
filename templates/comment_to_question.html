@@ -6,7 +6,7 @@
     <h3>Title:</h3>
     <p>{{ question['title'] }}</p>
     <h3>Message:</h3>
-    <p>{{ question['message'] }}</p>
+    <p>{{ question['message'] }}</p><br>
 
     <form action="/question/{{ question['id'] }}/new-comment" method="POST">
             <label for="comment">Your comment:</label><br>

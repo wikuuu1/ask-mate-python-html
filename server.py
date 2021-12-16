@@ -80,7 +80,7 @@ def add_new_question_post():
     new_table_row = [submission_time, '0', '0', question_title, question_description, path]
     data_manager.save_question_to_table(new_table_row)
     question_id = data_manager.get_question_id_by_data(new_table_row)
-
+    print(question_id)
     return redirect(f'/question/{question_id["id"]}')
 
 
@@ -144,6 +144,26 @@ def delete_answer(question_id, answer_id):
     data_manager.delete_answer_in_database(answer_id)
 
     return redirect(f'/question/{question_id}')
+
+
+@app.route("/answer/<answer_id>/edit", methods=["GET"])
+def edit_answer(answer_id):
+    answer_to_edit = data_manager.get_answer_by_id(answer_id)
+    return render_template('edit_answer.html', answer=answer_to_edit)
+
+
+@app.route("/answer/<answer_id>/edit", methods=["POST"])
+def edit_answer_post(answer_id):
+    message = request.form['edit_answer_message']
+    data_manager.edit_answer(answer_id, message)
+    question = data_manager.get_question_id_by_answer_id(answer_id)
+
+    return redirect(f'/question/{question[0]["question_id"]}')
+
+
+# @app.route("/answer/<answer_id>/new-comment", methods=["GET"])
+# def add_comment_to_answer(question_id, answer_id):
+#     pass
 
 
 if __name__ == "__main__":

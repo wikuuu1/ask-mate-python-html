@@ -1,7 +1,4 @@
-import connection
 import database_common
-from datetime import datetime
-from psycopg2 import sql
 from psycopg2.extras import DictCursor
 
 QUESTION_DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -145,6 +142,16 @@ def delete_answer_in_database(cursor, answer_id):
 
 
 @database_common.connection_handler
+def edit_answer(cursor, answer_id, message):
+    query = """
+                UPDATE answer
+                SET message=%(message)s
+                WHERE id=%(answer_id)s
+                """
+    cursor.execute(query, {'answer_id': answer_id, 'message': message})
+
+
+@database_common.connection_handler
 def get_answer_by_id(cursor, answer_id: str) -> list:
     query = """
             SELECT *
@@ -162,3 +169,14 @@ def get_comments_for_question(cursor, question_id: str) -> list:
             WHERE question_id=%(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_id_by_answer_id(cursor, answer_id: str) -> list:
+    query = """
+            SELECT question_id
+            FROM answer
+            WHERE id=%(answer_id)s"""
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchall()
+
