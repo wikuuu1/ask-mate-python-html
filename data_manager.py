@@ -120,6 +120,25 @@ def edit_question(cursor, question_id, title, message):
     cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
 
 
+@database_common.connection_handler
+def delete_answer_in_database(cursor, answer_id):
+    query = """
+                DELETE FROM answer
+                WHERE id=%(answer_id)s
+                """
+    cursor.execute(query, {'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def get_answer_by_id(cursor, answer_id: str) -> list:
+    query = """
+            SELECT *
+            FROM answer
+            WHERE id=%(answer_id)s"""
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+
 def get_questions_headers():
     return QUESTION_DATA_HEADER
 
