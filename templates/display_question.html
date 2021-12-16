@@ -31,12 +31,12 @@
 
         <div id="options-container">
             <div id="add-answer-container">
-                <a href="{{ url_for('get_new_answer', question_id=question.id) }}">
+                <a href="{{ url_for('add_new_answer', question_id=question.id) }}">
                     <button type="submit">Add new answer</button>
                 </a>
             </div>
             <div id="edit-question-container">
-                <a href="{{ url_for('get_edit_question', question_id=question.id) }}">
+                <a href="{{ url_for('edit_question', question_id=question.id) }}">
                     <button type="submit">Edit question</button>
                 </a>
             </div>
@@ -45,9 +45,27 @@
                     <button type="submit">Delete question</button>
                 </a>
             </div>
+            <div id="add-comment-to-question-container">
+                <a href="{{ url_for('add_new_comment_to_question', question_id=question.id) }}">
+                    <button type="submit">Add comment</button>
+                </a>
+            </div>
         </div>
 
     </div>
+    <br>
+    <p>Comment to questions:</p>
+    {% for comment in question_comments %}
+    <br>
+        #{{ comment.id }}<br>
+        {{ comment.message }}<br>
+        {{ comment.submission_time }}<br>
+        {{ comment.edited_count }}<br>
+
+    {% endfor %}
+    <br>
+
+    <p>Answers:</p>
 
     {% for answer in answers %}
     <br>

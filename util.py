@@ -60,6 +60,9 @@ def find_answers_for_question(table, id):
     return list_for_answers
 
 
+from datetime import datetime
+
+
 def date_to_int(date):
     converted_date = ""
     for index, i in enumerate(date):
@@ -67,3 +70,9 @@ def date_to_int(date):
             converted_date += i
 
     return converted_date
+
+
+def get_actual_date():
+    actual_time = datetime.now()
+    submission_time = date_to_int(str(actual_time))
+    return submission_time

@@ -3,11 +3,12 @@
 
 {% block content %}
         <h1>Add New Question</h1>
-        <form action="{{ url_for('route_ask_question') }}" method="POST">
+        <form action="{{ url_for('add_question') }}" enctype="multipart/form-data" method="POST">
             <label for="question_title">Question Title:</label><br>
             <input type="text" id="question_title" name="new_question"><br><br>
             <label for="question_description">Question Description:</label><br>
             <textarea name="question_description" id="question_description" rows="10" cols="30" style="resize: none"></textarea><br><br>
+            <input type="file" name="image"><br>
             <input type="submit" value="Add your question">
         </form>
 {% endblock %}

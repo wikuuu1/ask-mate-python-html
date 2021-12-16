@@ -8,6 +8,14 @@ QUESTION_DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', '
 ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
+def get_questions_headers():
+    return QUESTION_DATA_HEADER
+
+
+def get_answers_headers():
+    return ANSWER_DATA_HEADER
+
+
 @database_common.connection_handler
 def get_all_questions_sorted(cursor: DictCursor, order_by: str, order_dir: str) -> list:
     query = """
@@ -39,6 +47,15 @@ def get_question_by_id(cursor, question_id: str) -> list:
             WHERE id=%(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def update_view_number(cursor, question_id: str):
+    query = """
+            UPDATE question
+            SET view_number=view_number + 1
+            WHERE id=%(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
 
 
 @database_common.connection_handler
@@ -88,25 +105,41 @@ def save_answer_to_table(cursor, new_table_row: list):
                            'image': new_table_row[4]})
 
 
-def write_question_to_file(table):
-    return connection.write_data_row_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+@database_common.connection_handler
+def delete_question_in_file(cursor, question_id):
+    query = """
+                DELETE FROM question
+                WHERE id=%(question_id)s
+                """
+    cursor.execute(query, {'question_id': question_id})
 
 
-def overwrite_question_in_file(table):
-    return connection.write_table_to_file(table, connection.QUESTION_DATA_FILE_PATH)
+@database_common.connection_handler
+def edit_question(cursor, question_id, title, message):
+    query = """
+                UPDATE question
+                SET title=%(title)s, message=%(message)s
+                WHERE id=%(question_id)s 
+                """
+    cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
 
 
-def convert_timestamp_to_date_in_data(data):
-    for row in data:
-        timestamp = int(row['submission_time'])
-        date = datetime.fromtimestamp(timestamp)
-        row['submission_time'] = date
-    return data
+@database_common.connection_handler
+def save_comment_to_table(cursor, new_table_row: list):
+    query = """
+            INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count)
+            VALUES (%(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s)
+            """
+    cursor.execute(query, {'question_id': new_table_row[0], 'answer_id': new_table_row[1],
+                           'message': new_table_row[2], 'submission_time': new_table_row[3],
+                           'edited_count': new_table_row[4]})
 
 
-def get_questions_headers():
-    return QUESTION_DATA_HEADER
-
-
-def get_answers_headers():
-    return ANSWER_DATA_HEADER
+@database_common.connection_handler
+def get_comments_for_question(cursor, question_id: str) -> list:
+    query = """
+            SELECT *
+            FROM comment
+            WHERE question_id=%(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchall()

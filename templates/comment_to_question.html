@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Adding comment the question{% endblock %}
+
+{% block content %}
+    <h3>Title:</h3>
+    <p>{{ question['title'] }}</p>
+    <h3>Message:</h3>
+    <p>{{ question['message'] }}</p>
+
+    <form action="/question/{{ question['id'] }}/new-comment" method="POST">
+            <label for="comment">Your comment:</label><br>
+            <textarea name="comment" id="comment" rows="10" cols="30" style="resize: none"></textarea><br><br>
+            <input type="submit" value="Submit">
+        </form>
+
+{% endblock %}
