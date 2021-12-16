@@ -139,5 +139,12 @@ def add_new_comment_to_question_post(question_id):
     return redirect(f'/question/{question_id}')
 
 
+@app.route("/question/<question_id>/answer/<answer_id>/delete", methods=["GET"])
+def delete_answer(question_id, answer_id):
+    data_manager.delete_answer_in_database(answer_id)
+
+    return redirect(f'/question/{question_id}')
+
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -136,6 +136,25 @@ def save_comment_to_table(cursor, new_table_row: list):
 
 
 @database_common.connection_handler
+def delete_answer_in_database(cursor, answer_id):
+    query = """
+                DELETE FROM answer
+                WHERE id=%(answer_id)s
+                """
+    cursor.execute(query, {'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def get_answer_by_id(cursor, answer_id: str) -> list:
+    query = """
+            SELECT *
+            FROM answer
+            WHERE id=%(answer_id)s"""
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
 def get_comments_for_question(cursor, question_id: str) -> list:
     query = """
             SELECT *

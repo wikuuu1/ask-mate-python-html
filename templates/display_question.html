@@ -69,15 +69,21 @@
 
     {% for answer in answers %}
     <br>
-                #{{ answer.id }}<br>
+            #{{ answer.id }}<br>
 
-                {{ answer.submission_time }}<br>
+            {{ answer.submission_time }}<br>
 
-                Votes: {{ answer.vote_number }}<br>
+            Votes: {{ answer.vote_number }}<br>
 
-                {{ answer.message }}<br>
+            {{ answer.message }}<br>
 
-                {{ answer.image }}<br>
+            {{ answer.image }}<br>
+
+            <div id="delete-answer-container">
+                <a href="{{ url_for('delete_answer', question_id=question.id, answer_id=answer.id) }}">
+                    <button type="submit">Delete answer</button>
+                </a>
+            </div>
 
 
     {% endfor %}
