@@ -42,6 +42,15 @@ def get_question_by_id(cursor, question_id: str) -> list:
 
 
 @database_common.connection_handler
+def update_view_number(cursor, question_id: str):
+    query = """
+            UPDATE question
+            SET view_number=view_number + 1
+            WHERE id=%(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+
+
+@database_common.connection_handler
 def get_answers_for_question(cursor, question_id: str) -> list:
     query = """
             SELECT *
@@ -109,14 +118,6 @@ def edit_question(cursor, question_id, title, message):
                 WHERE id=%(question_id)s 
                 """
     cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
-
-
-def convert_timestamp_to_date_in_data(data):
-    for row in data:
-        timestamp = int(row['submission_time'])
-        date = datetime.fromtimestamp(timestamp)
-        row['submission_time'] = date
-    return data
 
 
 def get_questions_headers():

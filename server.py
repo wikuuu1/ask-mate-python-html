@@ -5,7 +5,7 @@ import util
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = './static/IMG'
+app.config['UPLOAD_FOLDER'] = './static/upload'
 
 ORDER_BY = 'order_by'
 ORDER_BY_LABELS = {'submission_time': 'Time added',
@@ -44,8 +44,9 @@ def list_questions():
     return redirect("/")
 
 
-@app.route("/question/<question_id>")
+@app.route("/question/<question_id>", methods=["GET"])
 def route_display_question(question_id):
+    data_manager.update_view_number(question_id)
     selected_question = data_manager.get_question_by_id(question_id)
     answers_for_question = data_manager.get_answers_for_question(question_id)
 
@@ -66,9 +67,9 @@ def route_create_new_question():
     question_description = request.form['question_description']
     path = ""
 
-    try:
-        if 'file1' not in request.files:
-            file1 = request.files['file1']
+    try:  # saving image to file
+        if 'image' in request.files:
+            file1 = request.files['image']
             path = os.path.join(app.config['UPLOAD_FOLDER'], file1.filename)
             file1.save(path)
 
@@ -99,7 +100,7 @@ def route_new_answer(question_id):
     return redirect(f'/question/{question_id}')
 
 
-@app.route("/question/<question_id>/delete")
+@app.route("/question/<question_id>/delete", methods=["GET"])
 def delete_question(question_id):
     data_manager.delete_question_in_file(question_id)
 
