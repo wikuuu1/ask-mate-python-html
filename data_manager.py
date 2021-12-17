@@ -162,3 +162,13 @@ def get_comments_for_question(cursor, question_id: str) -> list:
             WHERE question_id=%(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def update_vote_number(cursor, question_id: str, vote_dir):
+    query = """
+            UPDATE question
+            SET vote_number=vote_number {} 1
+            WHERE id=%(question_id)s""".format(vote_dir)
+    cursor.execute(query, {'question_id': question_id})
+

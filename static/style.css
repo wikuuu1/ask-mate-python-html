@@ -162,7 +162,33 @@ select {
     font-family: Aquire,serif;
 }
 
+#upvote {
+    background: url('/static/img/thumbs_up.png') no-repeat center;
+    width: 24px;
+    height: 24px;
+    background-size: 100% 100%;
+}
 
+#upvote:hover {
+    background: url('/static/img/thumbs_up_hover.png') no-repeat center;
+    width: 24px;
+    height: 24px;
+    background-size: 100% 100%;
+}
+
+#downvote {
+    background: url('/static/img/thumbs_down.png') no-repeat center;
+    width: 24px;
+    height: 24px;
+    background-size: 100% 100%;
+
+
+}#downvote:hover {
+    background: url('/static/img/thumbs_down_hover.png') no-repeat center;
+    width: 24px;
+    height: 24px;
+    background-size: 100% 100%;
+}
 
 #question-container {
     border: 10px solid #1C6EA4;
@@ -247,3 +273,4 @@ select {
     padding-left: 15px;
     float: left;
 }
+

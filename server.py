@@ -84,22 +84,6 @@ def add_new_question_post():
     return redirect(f'/question/{question_id["id"]}')
 
 
-@app.route("/question/<question_id>/new-answer", methods=["GET"])
-def add_new_answer(question_id):
-    question_to_answer = data_manager.get_question_by_id(question_id)
-    return render_template('answer.html', question=question_to_answer)
-
-
-@app.route("/question/<question_id>/new-answer", methods=["POST"])
-def add_new_answer_post(question_id):
-    submission_time = util.get_actual_date()
-    message = request.form['answer_description']
-    new_data_row = [submission_time, '0', question_id, message, 'image']
-    data_manager.save_answer_to_table(new_data_row)
-
-    return redirect(f'/question/{question_id}')
-
-
 @app.route("/question/<question_id>/delete", methods=["GET"])
 def delete_question(question_id):
     data_manager.delete_question_in_file(question_id)
@@ -139,11 +123,41 @@ def add_new_comment_to_question_post(question_id):
     return redirect(f'/question/{question_id}')
 
 
+@app.route("/question/<question_id>/new-answer", methods=["GET"])
+def add_new_answer(question_id):
+    question_to_answer = data_manager.get_question_by_id(question_id)
+    return render_template('answer.html', question=question_to_answer)
+
+
+@app.route("/question/<question_id>/new-answer", methods=["POST"])
+def add_new_answer_post(question_id):
+    submission_time = util.get_actual_date()
+    message = request.form['answer_description']
+    new_data_row = [submission_time, '0', question_id, message, 'image']
+    data_manager.save_answer_to_table(new_data_row)
+
+    return redirect(f'/question/{question_id}')
+
+
 @app.route("/question/<question_id>/answer/<answer_id>/delete", methods=["GET"])
 def delete_answer(question_id, answer_id):
     data_manager.delete_answer_in_database(answer_id)
 
     return redirect(f'/question/{question_id}')
+
+
+@app.route("/question/<question_id>/vote_up", methods=["GET"])
+def upvote_question(question_id):
+    data_manager.update_vote_number(question_id, '+')
+
+    return redirect('/')
+
+
+@app.route("/question/<question_id>/vote_down", methods=["GET"])
+def downvote_question(question_id):
+    data_manager.update_vote_number(question_id, '-')
+
+    return redirect('/')
 
 
 if __name__ == "__main__":
