@@ -24,7 +24,7 @@ ORDER_DIR_SQL = {'ascending': 'ASC',
 @app.route("/")
 @app.route("/list")
 def list_questions():
-    headers_list = data_manager.get_questions_headers()
+    headers_list = data_manager.get_questions_headers()  # FIXME
     order_by = request.args.get(ORDER_BY, 'submission_time')
     order_dir = request.args.get(ORDER_DIR, 'descending')
 
@@ -80,6 +80,7 @@ def add_new_question_post():
     new_table_row = [submission_time, '0', '0', question_title, question_description, path]
     data_manager.save_question_to_table(new_table_row)
     question_id = data_manager.get_question_id_by_data(new_table_row)
+    # TODO: cursor.execute("INSERT INTO .... RETURNING id") id_of_new_row = cursor.fetchone()[0]
 
     return redirect(f'/question/{question_id["id"]}')
 
@@ -160,7 +161,7 @@ def edit_answer_post(answer_id):
     data_manager.edit_answer(answer_id, message)
     question = data_manager.get_question_id_by_answer_id(answer_id)
 
-    return redirect(f'/question/{question[0]["question_id"]}')
+    return redirect(f'/question/{question["question_id"]}')
 
 
 # @app.route("/answer/<answer_id>/new-comment", methods=["GET"])
@@ -175,7 +176,7 @@ def up_vote_question(question_id):
     return redirect('/')
 
 
-@app.route("/question/<question_id>/vote_down", methods=["GET"])
+@app.route("/question/<int:question_id>/vote_down", methods=["GET"])
 def down_vote_question(question_id):
     data_manager.update_vote_number(question_id, '-')
 

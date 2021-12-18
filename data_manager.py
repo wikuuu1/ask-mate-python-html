@@ -16,6 +16,7 @@ def get_answers_headers():
     return ANSWER_DATA_HEADER
 
 
+#  FIXME: SQL INJECTION
 @database_common.connection_handler
 def get_all_questions_sorted(cursor: DictCursor, order_by: str, order_dir: str) -> list:
     query = """
@@ -24,7 +25,7 @@ def get_all_questions_sorted(cursor: DictCursor, order_by: str, order_dir: str) 
         ORDER BY {} {}
         """.format(order_by, order_dir)
 
-    cursor.execute(query, {'order_by': order_by, 'order_dir': order_dir})
+    cursor.execute(query)
 
     return cursor.fetchall()
 
@@ -178,7 +179,7 @@ def get_comments_for_question(cursor, question_id: str) -> list:
 def update_vote_number(cursor, question_id: str, vote_dir):
     query = """
             UPDATE question
-            SET vote_number=vote_number {} 1
+            SET vote_number=vote_number {} 1   
             WHERE id=%(question_id)s""".format(vote_dir)
     cursor.execute(query, {'question_id': question_id})
 
@@ -190,7 +191,7 @@ def get_question_id_by_answer_id(cursor, answer_id: str) -> list:
             FROM answer
             WHERE id=%(answer_id)s"""
     cursor.execute(query, {'answer_id': answer_id})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
