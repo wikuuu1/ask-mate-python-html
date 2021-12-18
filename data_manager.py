@@ -183,7 +183,6 @@ def update_vote_number(cursor, question_id: str, vote_dir):
     cursor.execute(query, {'question_id': question_id})
 
 
-
 @database_common.connection_handler
 def get_question_id_by_answer_id(cursor, answer_id: str) -> list:
     query = """
@@ -193,3 +192,11 @@ def get_question_id_by_answer_id(cursor, answer_id: str) -> list:
     cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def delete_answers_to_questions(cursor, question_id: str):
+    query = """
+                DELETE FROM question
+                WHERE quesiton_id=%(question_id)s
+                """
+    cursor.execute(query, {'question_id': question_id})
