@@ -167,14 +167,14 @@ def edit_answer_post(answer_id):
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
-def upvote_question(question_id):
+def up_vote_question(question_id):
     data_manager.update_vote_number(question_id, '+')
 
     return redirect('/')
 
 
 @app.route("/question/<question_id>/vote_down", methods=["GET"])
-def downvote_question(question_id):
+def down_vote_question(question_id):
     data_manager.update_vote_number(question_id, '-')
 
     return redirect('/')
