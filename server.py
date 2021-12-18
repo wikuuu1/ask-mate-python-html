@@ -140,11 +140,12 @@ def add_new_answer_post(question_id):
     return redirect(f'/question/{question_id}')
 
 
-@app.route("/question/<question_id>/answer/<answer_id>/delete", methods=["GET"])
-def delete_answer(question_id, answer_id):
+@app.route("/answer/<answer_id>/delete", methods=["GET"])
+def delete_answer(answer_id):
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
     data_manager.delete_answer_in_database(answer_id)
 
-    return redirect(f'/question/{question_id}')
+    return redirect(f'/question/{question_id[0]["question_id"]}')
 
 
 @app.route("/answer/<answer_id>/edit", methods=["GET"])
