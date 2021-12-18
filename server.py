@@ -146,6 +146,26 @@ def delete_answer(question_id, answer_id):
     return redirect(f'/question/{question_id}')
 
 
+@app.route("/answer/<answer_id>/edit", methods=["GET"])
+def edit_answer(answer_id):
+    answer_to_edit = data_manager.get_answer_by_id(answer_id)
+    return render_template('edit_answer.html', answer=answer_to_edit)
+
+
+@app.route("/answer/<answer_id>/edit", methods=["POST"])
+def edit_answer_post(answer_id):
+    message = request.form['edit_answer_message']
+    data_manager.edit_answer(answer_id, message)
+    question = data_manager.get_question_id_by_answer_id(answer_id)
+
+    return redirect(f'/question/{question[0]["question_id"]}')
+
+
+# @app.route("/answer/<answer_id>/new-comment", methods=["GET"])
+# def add_comment_to_answer(question_id, answer_id):
+#     pass
+
+
 @app.route("/question/<question_id>/vote_up", methods=["GET"])
 def upvote_question(question_id):
     data_manager.update_vote_number(question_id, '+')

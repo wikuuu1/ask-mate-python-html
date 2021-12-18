@@ -145,6 +145,16 @@ def delete_answer_in_database(cursor, answer_id):
 
 
 @database_common.connection_handler
+def edit_answer(cursor, answer_id, message):
+    query = """
+                UPDATE answer
+                SET message=%(message)s
+                WHERE id=%(answer_id)s
+                """
+    cursor.execute(query, {'answer_id': answer_id, 'message': message})
+
+
+@database_common.connection_handler
 def get_answer_by_id(cursor, answer_id: str) -> list:
     query = """
             SELECT *
@@ -171,4 +181,15 @@ def update_vote_number(cursor, question_id: str, vote_dir):
             SET vote_number=vote_number {} 1
             WHERE id=%(question_id)s""".format(vote_dir)
     cursor.execute(query, {'question_id': question_id})
+
+
+
+@database_common.connection_handler
+def get_question_id_by_answer_id(cursor, answer_id: str) -> list:
+    query = """
+            SELECT question_id
+            FROM answer
+            WHERE id=%(answer_id)s"""
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchall()
 

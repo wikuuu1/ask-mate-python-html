@@ -5,8 +5,8 @@
 {% block content %}
     <p>{{ question['title'] }}</p>
     <p>{{ question['message'] }}</p>
-    <form action="/question/{{ question['id'] }}/new-answer" method="POST">
-    <h2>Add an answer to this question:</h2>
+        <form action="/question/{{ question['id'] }}/new-answer" method="POST">
+        <h2>Add an answer to this question:</h2>
             <label for="answer_description">Answer to the question:</label><br>
             <textarea name="answer_description" id="answer_description" rows="10" cols="30" style="resize: none"></textarea><br><br>
             <input type="submit" value="Add your answer">
