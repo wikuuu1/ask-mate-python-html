@@ -196,7 +196,7 @@ def get_question_id_by_answer_id(cursor, answer_id: str) -> list:
 @database_common.connection_handler
 def delete_answers_to_questions(cursor, question_id: str):
     query = """
-                DELETE FROM question
+                DELETE FROM answer
                 WHERE quesiton_id=%(question_id)s
                 """
     cursor.execute(query, {'question_id': question_id})
