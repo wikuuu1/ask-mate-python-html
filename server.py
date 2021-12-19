@@ -146,7 +146,7 @@ def delete_answer(answer_id):
     question_id = data_manager.get_question_id_by_answer_id(answer_id)
     data_manager.delete_answer_in_database(answer_id)
 
-    return redirect(f'/question/{question_id[0]["question_id"]}')
+    return redirect(f'/question/{question_id["question_id"]}')
 
 
 @app.route("/answer/<answer_id>/edit", methods=["GET"])
