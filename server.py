@@ -50,10 +50,20 @@ def display_question(question_id):
     answers_for_question = data_manager.get_answers_for_question(question_id)
     comments_for_question = data_manager.get_comments_for_question(question_id)
 
+    if len(answers_for_question) != 0:
+        comments_for_answers = []
+        for element in answers_for_question:
+            comments_for_answer = data_manager.get_comments_for_answer(element['id'])
+            comments_for_answers.append(comments_for_answer)
+
+    else:
+        comments_for_answers = []
+
     return render_template('display_question.html',
                            question=selected_question,
                            answers=answers_for_question,
-                           question_comments=comments_for_question)
+                           question_comments=comments_for_question,
+                           answers_comments=comments_for_answers)
 
 
 @app.route("/add-question", methods=["GET"])
@@ -167,6 +177,23 @@ def edit_answer_post(answer_id):
 # @app.route("/answer/<answer_id>/new-comment", methods=["GET"])
 # def add_comment_to_answer(question_id, answer_id):
 #     pass
+
+@app.route("/answer/<answer_id>/new-comment", methods=["GET"])
+def add_comment_to_answer(answer_id):
+    selected_answer = data_manager.get_answer_by_id(answer_id)
+
+    return render_template('comment_to_answer.html', answer=selected_answer)
+
+
+@app.route("/answer/<answer_id>/new-comment", methods=["POST"])
+def add_comment_to_answer_post(answer_id):
+    comment = request.form['answer_comment']
+    submission_time = util.get_actual_date()
+    new_table_row = [None, answer_id, comment, submission_time, None]
+    data_manager.save_comment_to_table(new_table_row)
+    question = data_manager.get_question_id_by_answer_id(answer_id)
+
+    return redirect(f'/question/{question["question_id"]}')
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET"])

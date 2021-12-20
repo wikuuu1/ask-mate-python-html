@@ -79,17 +79,34 @@
 
             {{ answer.image }}<br>
 
-            <div id="delete-answer-container">
-                <a href="{{ url_for('delete_answer', question_id=question.id, answer_id=answer.id) }}">
-                    <button type="submit">Delete answer</button>
-                </a>
-            </div>
-            <div id="edit-answer-container">
-                <a href="{{ url_for('edit_answer', answer_id=answer.id)}}">
-                    <button type="submit">Edit an answer</button>
-                </a>
-            </div>
+
+        <div id="delete-answer-container">
+            <a href="{{ url_for('delete_answer', question_id=question.id, answer_id=answer.id) }}">
+                <button type="submit">Delete answer</button>
+            </a>
+        </div>
+        <div id="edit-answer-container">
+            <a href="{{ url_for('edit_answer', answer_id=answer.id)}}">
+                <button type="submit">Edit an answer</button>
+            </a>
+        </div>
+        <div id="answer-comment-container">
+            <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}">
+                <button type="submit">Add comment to answer</button>
+            </a>
+        </div>
+        <p>Comments to answer:</p>
+        {% set outer_loop = loop %}
+        {{ outer_loop }}
+        {% for a_comment in answers_comments[outer_loop.index - 1] %}
+            <br>
+            comment id: {{ a_comment.id }}<br>
+            {{ a_comment.message }}<br>
+            {{ a_comment.submission_time }}<br>
+            {{ a_comment.edited_count }}<br>
+        {% endfor %}
 
 
     {% endfor %}
+
 {% endblock content %}

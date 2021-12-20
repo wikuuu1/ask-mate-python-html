@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Adding comment to the answer{% endblock %}
+
+{% block content %}
+    <h3>Message:</h3>
+    <p>{{ answer['message'] }}</p><br>
+
+    <form action="/answer/{{ answer['id'] }}/new-comment" method="POST">
+            <label for="answer_comment">Your comment:</label><br>
+            <textarea name="answer_comment" id="answer_comment" rows="10" cols="30" style="resize: none"></textarea><br><br>
+            <input type="submit" value="Add comment">
+        </form><br>
+    <a href="{{ url_for('list_questions')}}">
+        <button type="submit">Main menu</button>
+    </a>
+
+{% endblock %}
