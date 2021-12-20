@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Editing comment{% endblock %}
+
+{% block content %}
+    <h3>Title:</h3>
+    <p>{{ question['title'] }}</p>
+    <h3>Message:</h3>
+    <p>{{ question['message'] }}</p><br>
+
+    <form action="{{ url_for('edit_question_comment_post', comment_id=comment.id) }}" method="POST">
+            <label for="message">Your comment:</label><br>
+            <textarea name="edit_comment_message" id="message" rows="10" cols="30" style="resize: none">{{ comment.message }}</textarea><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    <p>Edited: {{ comment.edited_count }} times</p>
+
+{% endblock %}
