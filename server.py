@@ -24,7 +24,6 @@ ORDER_DIR_SQL = {'ascending': 'ASC',
 @app.route("/")
 @app.route("/list")
 def list_questions():
-    headers_list = data_manager.get_questions_headers()  # FIXME
     order_by = request.args.get(ORDER_BY, 'submission_time')
     order_dir = request.args.get(ORDER_DIR, 'descending')
 
@@ -34,7 +33,6 @@ def list_questions():
 
         return render_template('list.html',
                                questions=users_questions,
-                               headers=headers_list,
                                order_by_labels=ORDER_BY_LABELS,
                                order_dir_labels=ORDER_DIR_LABELS,
                                current_order_by=order_by,
@@ -43,7 +41,7 @@ def list_questions():
     return redirect("/")
 
 
-@app.route("/question/<question_id>", methods=["GET"])
+@app.route("/question/<int:question_id>", methods=["GET"])
 def display_question(question_id):
     data_manager.update_view_number(question_id)
     selected_question = data_manager.get_question_by_id(question_id)
@@ -78,38 +76,29 @@ def add_new_question_post():
     question_description = request.form['question_description']
     path = ""
 
-    try:  # saving image to file
-        if 'image' in request.files:
-            file1 = request.files['image']
-            path = os.path.join(app.config['UPLOAD_FOLDER'], file1.filename)
-            file1.save(path)
-
-    except OSError:
-        pass
+    save_image_to_file(request.files)
 
     new_table_row = [submission_time, '0', '0', question_title, question_description, path]
-    data_manager.save_question_to_table(new_table_row)
-    question_id = data_manager.get_question_id_by_data(new_table_row)
-    # TODO: cursor.execute("INSERT INTO .... RETURNING id") id_of_new_row = cursor.fetchone()[0]
+    question_id = data_manager.save_question_to_table(new_table_row)
 
-    return redirect(f'/question/{question_id["id"]}')
+    return redirect(f'/question/{question_id}')
 
 
-@app.route("/question/<question_id>/delete", methods=["GET"])
+@app.route("/question/<int:question_id>/delete", methods=["GET"])
 def delete_question(question_id):
-    data_manager.delete_question_in_file(question_id)
+    data_manager.delete_question(question_id)
     # data_manager.delete_answers_to_questions(question_id)
 
     return redirect("/")
 
 
-@app.route("/question/<question_id>/edit", methods=["GET"])
+@app.route("/question/<int:question_id>/edit", methods=["GET"])
 def edit_question(question_id):
     question_to_edit = data_manager.get_question_by_id(question_id)
     return render_template('edit_question.html', question=question_to_edit)
 
 
-@app.route("/question/<question_id>/edit", methods=["POST"])
+@app.route("/question/<int:question_id>/edit", methods=["POST"])
 def edit_question_post(question_id):
     title = request.form['edited_question']
     message = request.form['edited_description']
@@ -118,14 +107,14 @@ def edit_question_post(question_id):
     return redirect(f'/question/{question_id}')
 
 
-@app.route("/question/<question_id>/new-comment", methods=["GET"])
+@app.route("/question/<int:question_id>/new-comment", methods=["GET"])
 def add_new_comment_to_question(question_id):
     selected_question = data_manager.get_question_by_id(question_id)
 
     return render_template('comment_to_question.html', question=selected_question)
 
 
-@app.route("/question/<question_id>/new-comment", methods=["POST"])
+@app.route("/question/<int:question_id>/new-comment", methods=["POST"])
 def add_new_comment_to_question_post(question_id):
     comment = request.form['comment']
     submission_time = util.get_actual_date()
@@ -135,13 +124,13 @@ def add_new_comment_to_question_post(question_id):
     return redirect(f'/question/{question_id}')
 
 
-@app.route("/question/<question_id>/new-answer", methods=["GET"])
+@app.route("/question/<int:question_id>/new-answer", methods=["GET"])
 def add_new_answer(question_id):
     question_to_answer = data_manager.get_question_by_id(question_id)
     return render_template('answer.html', question=question_to_answer)
 
 
-@app.route("/question/<question_id>/new-answer", methods=["POST"])
+@app.route("/question/<int:question_id>/new-answer", methods=["POST"])
 def add_new_answer_post(question_id):
     submission_time = util.get_actual_date()
     message = request.form['answer_description']
@@ -151,27 +140,49 @@ def add_new_answer_post(question_id):
     return redirect(f'/question/{question_id}')
 
 
-@app.route("/answer/<answer_id>/delete", methods=["GET"])
+@app.route("/answer/<int:answer_id>/delete", methods=["GET"])
 def delete_answer(answer_id):
-    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    question_id = request.args.get('question_id')
     data_manager.delete_answer_in_database(answer_id)
 
-    return redirect(f'/question/{question_id["question_id"]}')
+    return redirect(f'/question/{question_id}')
 
 
-@app.route("/answer/<answer_id>/edit", methods=["GET"])
+@app.route("/comments/<int:comment_id>/delete", methods=["GET"])
+def delete_question_comment(comment_id):
+    question_id = request.args.get('question_id')
+    data_manager.delete_comment_in_database(comment_id)
+
+    return redirect(f'/question/{question_id}')
+
+
+@app.route("/answer/<int:answer_id>/edit", methods=["GET"])
 def edit_answer(answer_id):
     answer_to_edit = data_manager.get_answer_by_id(answer_id)
     return render_template('edit_answer.html', answer=answer_to_edit)
 
 
-@app.route("/answer/<answer_id>/edit", methods=["POST"])
+@app.route("/answer/<int:answer_id>/edit", methods=["POST"])
 def edit_answer_post(answer_id):
     message = request.form['edit_answer_message']
-    data_manager.edit_answer(answer_id, message)
-    question = data_manager.get_question_id_by_answer_id(answer_id)
+    question_id = data_manager.edit_answer(answer_id, message)
 
-    return redirect(f'/question/{question["question_id"]}')
+    return redirect(f'/question/{question_id}')
+
+
+@app.route("/comment/<int:comment_id>/edit", methods=["GET"])
+def edit_question_comment(comment_id):
+    comment_to_edit = data_manager.get_comment_by_id(comment_id)
+    question = data_manager.get_question_by_id(comment_to_edit['question_id'])
+    return render_template('edit_comment_to_question.html', comment=comment_to_edit, question=question)
+
+
+@app.route("/comment/<int:comment_id>/edit", methods=["POST"])
+def edit_question_comment_post(comment_id):
+    message = request.form['edit_comment_message']
+    question_id = data_manager.edit_comment_in_database(comment_id, message)
+
+    return redirect(f'/question/{question_id}')
 
 
 # @app.route("/answer/<answer_id>/new-comment", methods=["GET"])
@@ -196,7 +207,7 @@ def add_comment_to_answer_post(answer_id):
     return redirect(f'/question/{question["question_id"]}')
 
 
-@app.route("/question/<question_id>/vote_up", methods=["GET"])
+@app.route("/question/<int:question_id>/vote_up", methods=["GET"])
 def up_vote_question(question_id):
     data_manager.update_vote_number(question_id, '+')
 
@@ -208,6 +219,17 @@ def down_vote_question(question_id):
     data_manager.update_vote_number(question_id, '-')
 
     return redirect('/')
+
+
+def save_image_to_file(files):
+    try:  # saving image to file
+        if 'image' in files:
+            file1 = request.files['image']
+            path = os.path.join(app.config['UPLOAD_FOLDER'], file1.filename)
+            file1.save(path)
+
+    except OSError:
+        pass
 
 
 if __name__ == "__main__":
