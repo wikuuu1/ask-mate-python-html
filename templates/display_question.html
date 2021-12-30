@@ -106,7 +106,7 @@
         </div>
         <p>Comments to answer:</p>
         {% set outer_loop = loop %}
-        {{ outer_loop }}
+
         {% for a_comment in answers_comments[outer_loop.index - 1] %}
             <br>
             comment id: {{ a_comment.id }}<br>

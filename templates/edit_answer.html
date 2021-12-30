@@ -2,7 +2,7 @@
 {% block title%}Edit an answer{% endblock %}
 
 {% block content %}
-        <h1>Edit an answer</h1>
+        <h1 class="action_title">Edit an answer</h1>
         <form action="{{ url_for('edit_answer_post', answer_id=answer.id) }}" method="POST">
             <label for="edit_answer_message">Answer Description:</label><br>
             <textarea name="edit_answer_message" id="edit_answer_message" rows="10" cols="30" style="resize: none">{{ answer['message'] }}</textarea><br><br>
