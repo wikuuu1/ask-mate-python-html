@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% block title%}Add new question{% endblock %}
 {% block content %}
-
-
+    <a href="/">
+        <div id="logo-container"></div>
+    </a>
 
     <div class="form_layout">
 
         <h1 class="action_title">Add New Question</h1>
 
-        <form action="{{ url_for('add_question') }}" enctype="multipart/form-data" method="POST">
+        <form action="{{ url_for('add_question') }}" enctype="multipart/form-data" method="POST" class="forma">
             <label for="question_title">Question Title:</label><br>
             <input type="text" id="question_title" name="new_question"><br><br>
             <label for="question_description">Question Description:</label><br>

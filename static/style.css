@@ -296,7 +296,7 @@ h1.action_title {
     font-size: 1.5rem;
 
 }
-input {
+input[type=text], input[type=submit] {
     font-family: Arial, monospace;
     border-radius: 10px;
     width: 20vw;
@@ -304,7 +304,7 @@ input {
     font-size: 1em;
 }
 
-form {
+.forma {
     padding: 3vh;
 }
 
