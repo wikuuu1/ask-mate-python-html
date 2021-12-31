@@ -299,15 +299,14 @@ h1.action_title {
 
 }
 input[type=text], input[type=submit] {
-    border-radius: 10px;
+    border-radius: 0 10px 10px 10px;
     width: 20vw;
     border: 1px solid rgb(57,57,57);
     font-size: 1em;
 }
 
-
 .action_form {
-    padding: 3vh;
+    padding: 2vh 3vh 3vh 3vh;
 }
 
 input[type=text]{
@@ -315,36 +314,38 @@ input[type=text]{
     margin-top: 5px;
     line-height: 25px;
 }
-/*label[for=question_description]
- */
-label[for=question_description],label[for=question_title] {
+
+label:not(label[for="order_by"], label[for="order-direction"], label[for="file"]){
     font-size: 1.1em;
     font-weight: bold;
     color: rgb(57,57,57);
-
 }
+
 form textarea {
     font-family: Arial,serif;
     margin-top: 5px;
+    padding: 0;
     width: 20vw;
     height: 10vh;
-    border-radius: 10px;
+    border: 1px solid rgb(57,57,57);
+    border-radius: 0 10px 10px 10px;
     font-size: 1em;
+    resize: none;
 }
 
 input[type=submit] {
     background: white;
     padding: 10px 15px;
     margin: 8px 0;
+    color: rgb(57,57,57);
 }
 
 input[type="submit"]:hover {
     background: rgb(255, 159, 24);
-    border: 0;
+    border: none;
     transition: 0.3s;
     font-size: 1em;
     font-weight: bold;
-    color: rgb(57,57,57);
     cursor: pointer;
 }
 
@@ -357,10 +358,10 @@ input[type="file"] {
 input[type="file"] + label {
     width: 20vw;
     display: block;
-    background: white;
+    background: rgb(250,250,250);
     padding: 10px 0;
-    border: 1px solid rgb(0,0,0);
-    border-radius: 10px;
+    border: 1px solid rgb(57,57,57);
+    border-radius: 0 10px 10px 10px;
     color: rgb(57,57,57);
     font-size: 1em;
     text-align: center;
@@ -369,10 +370,27 @@ input[type="file"] + label {
 
 input:hover + label{
     background: rgb(255, 159, 24);
-    border: 0;
+    border: none;
     transition: 0.3s;
     font-size: 1em;
     font-weight: bold;
-    color: rgb(57,57,57);
     cursor: pointer;
+}
+
+.paragraph_class {
+    margin-top: 5px;
+    padding: 5px 10px 0 10px;
+
+}
+
+p.paragraph_look {
+    padding: 10px;
+    margin-bottom: 10px;
+    color: rgb(57,57,57);
+    background: linear-gradient(to top, #ff9933 0%, #ffcc66 100%);
+    border-radius: 10px 10px 10px 0;
+}
+
+p.paragraph_look > span {
+    font-weight: bolder;
 }

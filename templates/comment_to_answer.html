@@ -7,17 +7,20 @@
         <div  id="logo-container"></div>
     </a>
     <div class="form_layout">
-        <h1 class="action_title">Message: {{ answer['message'] }}</h1>
-        <p>{{ answer['message'] }}</p><br>
+        <h1 class="action_title">Add new comment to answer</h1>
 
-        <form action="/answer/{{ answer['id'] }}/new-comment" method="POST">
+        <div class="paragraph_class">
+            <p class="paragraph_look"><span>Message:</span> {{ answer['message'] }}</p><br>
+        </div>
+
+        <form action="/answer/{{ answer['id'] }}/new-comment" method="POST" class="action_form">
             <label for="answer_comment">Your comment:</label><br>
             <textarea name="answer_comment" id="answer_comment" rows="10" cols="30" style="resize: none"></textarea><br><br>
             <input type="submit" value="Add comment">
         </form><br>
 
-        <a href="{{ url_for('list_questions')}}">  #TODO: back to display question
+        <a href="{{ url_for('list_questions')}}">
             <button type="submit">Back to question</button>
-        </a>
+        </a>#TODO: back to display question
     </div>
 {% endblock %}

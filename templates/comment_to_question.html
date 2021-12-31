@@ -3,15 +3,22 @@
 {% block title %}Adding comment{% endblock %}
 
 {% block content %}
-    <h3>Title:</h3>
-    <p>{{ question['title'] }}</p>
-    <h3>Message:</h3>
-    <p>{{ question['message'] }}</p><br>
+    <a href="/">
+        <div id="logo-container"></div>
+    </a>
 
-    <form action="/question/{{ question['id'] }}/new-comment" method="POST">
+    <div class="form_layout">
+        <h1 class="action_title">Add new comment to question</h1>
+        <div class="paragraph_class">
+                <p class="paragraph_look"><span>Question title:</span> {{ question['title'] }}</p>
+                <p class="paragraph_look"><span>Description: </span>{{ question['message'] }}</p>
+        </div>
+
+        <form action="/question/{{ question['id'] }}/new-comment" method="POST" class="action_form">
             <label for="comment">Your comment:</label><br>
-            <textarea name="comment" id="comment" rows="10" cols="30" style="resize: none"></textarea><br><br>
-            <input type="submit" value="Submit">
+            <textarea name="comment" id="comment"></textarea><br><br>
+            <input type="submit" value="Add your comment">
         </form>
 
+    </div>
 {% endblock %}
