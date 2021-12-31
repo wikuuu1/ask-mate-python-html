@@ -282,44 +282,49 @@ div.form_layout {
     font-family: Arial, monospace;
     margin: 10px;
     font-size: 1rem;
-    border: rgb(57,57,57) 5px solid;
+    border: rgb(57,57,57) 6px solid;
     width: 24vw;
-    border-radius: 0 30px 30px 0;
+    border-radius: 0 20px 20px 20px;
 }
 
 h1.action_title {
-    padding: 3vh;
+    text-align: center;
+    padding: 2vh;
     background: rgb(57,57,57);
+    font-size: 1.5rem;
     border: 1px solid rgb(57,57,57);
     color: white;
-    border-radius: 10px;
-    font-size: 1.5rem;
+    border-radius: 0 10px 10px 10px;
+    letter-spacing: 3px;
 
 }
 input[type=text], input[type=submit] {
-    font-family: Arial, monospace;
     border-radius: 10px;
     width: 20vw;
     border: 1px solid rgb(57,57,57);
     font-size: 1em;
 }
 
-.forma {
+
+.action_form {
     padding: 3vh;
 }
 
 input[type=text]{
+    font-family: Arial,serif;
     margin-top: 5px;
     line-height: 25px;
 }
 /*label[for=question_description]
  */
-label {
-    font-size: 1.2em;
+label[for=question_description],label[for=question_title] {
+    font-size: 1.1em;
+    font-weight: bold;
     color: rgb(57,57,57);
 
 }
 form textarea {
+    font-family: Arial,serif;
     margin-top: 5px;
     width: 20vw;
     height: 10vh;
@@ -329,7 +334,7 @@ form textarea {
 
 input[type=submit] {
     background: white;
-    padding: 15px 20px;
+    padding: 10px 15px;
     margin: 8px 0;
 }
 
@@ -353,7 +358,7 @@ input[type="file"] + label {
     width: 20vw;
     display: block;
     background: white;
-    padding: 15px 0;
+    padding: 10px 0;
     border: 1px solid rgb(0,0,0);
     border-radius: 10px;
     color: rgb(57,57,57);
