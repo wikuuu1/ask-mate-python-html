@@ -185,10 +185,6 @@ def edit_question_comment_post(comment_id):
     return redirect(f'/question/{question_id}')
 
 
-# @app.route("/answer/<answer_id>/new-comment", methods=["GET"])
-# def add_comment_to_answer(question_id, answer_id):
-#     pass
-
 @app.route("/answer/<answer_id>/new-comment", methods=["GET"])
 def add_comment_to_answer(answer_id):
     selected_answer = data_manager.get_answer_by_id(answer_id)
