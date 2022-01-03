@@ -10,8 +10,8 @@
     <div class="form_layout">
         <h1 class="action_title">Add new comment to question</h1>
         <div class="paragraph_class">
-                <p class="paragraph_look"><span>Question title:</span> {{ question['title'] }}</p>
-                <p class="paragraph_look"><span>Description: </span>{{ question['message'] }}</p>
+                <p class="paragraph_look"><span>Question title:</span> {{ question.title }}</p>
+                <p class="paragraph_look"><span>Description: </span>{{ question.message }}</p>
         </div>
 
         <form action="/question/{{ question['id'] }}/new-comment" method="POST" class="action_form">
@@ -19,9 +19,10 @@
             <textarea name="comment" id="comment"></textarea><br><br>
             <input type="submit" value="Add your comment">
 
-            <a href="{{ url_for('display_question', question_id=question.id)}}">
-                <button type="submit" class="back_to_question_btn">Back to question</button>
-            </a>
+            <div class="back_to_question_btn">
+            <a href="{{ url_for('display_question', question_id=question.id)}}" >Back to question
+                </a>
+            </div>
 
         </form>
 

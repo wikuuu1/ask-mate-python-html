@@ -16,9 +16,10 @@
             <textarea name="edited_description" id="question_description">{{ question['message'] }}</textarea><br><br>
             <input type="submit" value="Edit question">
 
-            <a href="{{ url_for('display_question', question_id=question.id)}}">
-                <button type="submit" class="back_to_question_btn">Back to question</button>
-            </a>
+            <div class="back_to_question_btn">
+            <a href="{{ url_for('display_question', question_id=question.id)}}" >Back to question
+                </a>
+            </div>
 
         </form>
 

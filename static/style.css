@@ -300,9 +300,9 @@ h1.action_title {
 }
 input[type=text], input[type=submit] {
     border-radius: 0 10px 10px 10px;
-    width: 20vw;
     border: 1px solid rgb(57,57,57);
     font-size: 1em;
+    width: 100%;
 }
 
 .action_form {
@@ -319,13 +319,14 @@ label:not(label[for="order_by"], label[for="order-direction"], label[for="file"]
     font-size: 1.1em;
     font-weight: bold;
     color: rgb(57,57,57);
+    width: 100%;
 }
 
 form textarea {
     font-family: Arial,serif;
     margin-top: 5px;
     padding: 0;
-    width: 20vw;
+    width: 100%;
     height: 10vh;
     border: 1px solid rgb(57,57,57);
     border-radius: 0 10px 10px 10px;
@@ -338,6 +339,7 @@ input[type=submit] {
     padding: 10px 15px;
     margin: 8px 0;
     color: rgb(57,57,57);
+
 }
 
 input[type="submit"]:hover {
@@ -393,22 +395,35 @@ p.paragraph_look > span {
     font-weight: bolder;
 }
 
-button.back_to_question_btn {
+.back_to_question_btn {
     background: white;
     padding: 10px 15px;
-    margin: 8px 0;
     color: rgb(57,57,57);
     border-radius: 0 10px 10px 10px;
-    width: 20vw;
     border: 1px solid rgb(57,57,57);
     font-size: 1em;
+    text-align: center;
 }
 
-button.back_to_question_btn:hover {
+.back_to_question_btn a {
+    color: rgb(57,57,57);
+    text-decoration: none;
+}
+
+.back_to_question_btn:hover {
     background: rgb(255, 159, 24);
     border: none;
     transition: 0.3s;
     font-size: 1em;
     font-weight: bold;
     cursor: pointer;
+}
+
+#edited_count {
+    padding: 10px;
+    margin: 8px 0;
+    color: rgb(57,57,57);
+    background: linear-gradient(to top, #ff9933 0%, #ffcc66 100%);
+    border-radius: 10px 10px 10px 0;
+    text-align: center;
 }

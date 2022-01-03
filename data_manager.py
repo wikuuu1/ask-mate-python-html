@@ -163,6 +163,7 @@ def edit_comment_in_database(cursor: RealDictCursor, comment_id: int, message: s
     cursor.execute(query, {'comment_id': comment_id, 'message': message})
     return cursor.fetchone()['question_id']
 
+
 @database_common.connection_handler
 def get_answer_by_id(cursor: RealDictCursor, answer_id: str) -> RealDictRow:
     query = """

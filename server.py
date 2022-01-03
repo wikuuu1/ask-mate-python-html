@@ -203,6 +203,24 @@ def add_comment_to_answer_post(answer_id):
     return redirect(f'/question/{question["question_id"]}')
 
 
+@app.route("/answer_comment/<int:comment_id>/edit", methods=["GET"])
+def edit_answer_comment(comment_id):
+    comment_to_edit = data_manager.get_comment_by_id(comment_id)
+    answer = data_manager.get_answer_by_id(comment_to_edit['answer_id'])
+
+    return render_template('edit_comment_to_answer.html',
+                           comment=comment_to_edit,
+                           answer=answer)
+
+
+@app.route("/answer_comment/<int:comment_id>/edit", methods=["POST"])
+def edit_answer_comment_post(comment_id):
+    message = request.form['edit_comment_message']
+    question_id = data_manager.edit_comment_in_database(comment_id, message)
+
+    return redirect(f'/question/{question_id}')
+
+
 @app.route("/question/<int:question_id>/vote_up", methods=["GET"])
 def up_vote_question(question_id):
     data_manager.update_vote_number(question_id, '+')

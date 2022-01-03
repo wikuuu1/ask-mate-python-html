@@ -18,9 +18,11 @@
             <textarea name="answer_comment" id="answer_comment"></textarea><br><br>
             <input type="submit" value="Add comment">
 
-            <a href="{{ url_for('display_question', question_id=answer["question_id"])}}">
-                <button type="submit" class="back_to_question_btn">Back to question</button>
-            </a>
+            <div class="back_to_question_btn">
+            <a href="{{ url_for('display_question', question_id=answer['question_id'])}}" >Back to question
+                </a>
+            </div>
+
         </form><br>
     </div>
 {% endblock %}
