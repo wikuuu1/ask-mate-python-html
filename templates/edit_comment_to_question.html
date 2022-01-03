@@ -20,11 +20,11 @@
             <input type="submit" value="Edit comment">
 
             <div class="back_to_question_btn">
-            <a href="{{ url_for('display_question', question_id=question.id)}}" >Back to question
-                </a>
+                <a href="{{ url_for('display_question', question_id=question.id)}}" >Back to question</a>
             </div>
 
             <p id="edited_count">Edited: {{ comment.edited_count }} times</p>
+
         </form>
 
     </div>
