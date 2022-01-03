@@ -19,7 +19,8 @@
             <textarea name="comment" id="comment"></textarea><br><br>
             <input type="submit" value="Add your comment">
         </form>
-    <a href="{{ url_for('display_question', question_id=question.id)}}">
+
+        <a href="{{ url_for('display_question', question_id=question.id)}}">
             <button type="submit">Back to question</button>
         </a>
     </div>
