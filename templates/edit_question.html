@@ -2,12 +2,25 @@
 {% block title%}Edit question{% endblock %}
 
 {% block content %}
-        <h1>Edit Question</h1>
-        <form action="/question/{{ question['id'] }}/edit" method="POST">
+    <a href="/">
+        <div  id="logo-container"></div>
+    </a>
+
+    <div class="form_layout">
+        <h1 class="action_title">Edit Question</h1>
+
+        <form action="/question/{{ question['id'] }}/edit" method="POST" class="action_form">
             <label for="edited_question">Question Title:</label><br>
             <input type="text" id="edited_question" name="edited_question" value="{{ question['title'] }}"><br><br>
             <label for="edited_description">Question Description:</label><br>
-            <textarea name="edited_description" id="question_description" rows="10" cols="30" style="resize: none">{{ question['message'] }}</textarea><br><br>
+            <textarea name="edited_description" id="question_description">{{ question['message'] }}</textarea><br><br>
             <input type="submit" value="Edit question">
+
+            <a href="{{ url_for('display_question', question_id=question.id)}}">
+                <button type="submit" class="back_to_question_btn">Back to question</button>
+            </a>
+
         </form>
+
+    </div>
 {% endblock %}

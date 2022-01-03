@@ -3,16 +3,24 @@
 {% block title %}Adding comment to the answer{% endblock %}
 
 {% block content %}
-    <h3>Message:</h3>
-    <p>{{ answer['message'] }}</p><br>
-
-    <form action="/answer/{{ answer['id'] }}/new-comment" method="POST">
-            <label for="answer_comment">Your comment:</label><br>
-            <textarea name="answer_comment" id="answer_comment" rows="10" cols="30" style="resize: none"></textarea><br><br>
-            <input type="submit" value="Add comment">
-        </form><br>
-    <a href="{{ url_for('list_questions')}}">
-        <button type="submit">Main menu</button>
+    <a href="/">
+        <div  id="logo-container"></div>
     </a>
+    <div class="form_layout">
+        <h1 class="action_title">Add new comment to answer</h1>
 
+        <div class="paragraph_class">
+            <p class="paragraph_look"><span>Message:</span> {{ answer['message'] }}</p><br>
+        </div>
+
+        <form action="/answer/{{ answer['id'] }}/new-comment" method="POST" class="action_form">
+            <label for="answer_comment">Your comment:</label><br>
+            <textarea name="answer_comment" id="answer_comment"></textarea><br><br>
+            <input type="submit" value="Add comment">
+
+            <a href="{{ url_for('display_question', question_id=answer["question_id"])}}">
+                <button type="submit" class="back_to_question_btn">Back to question</button>
+            </a>
+        </form><br>
+    </div>
 {% endblock %}
