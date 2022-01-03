@@ -2,10 +2,22 @@
 {% block title%}Edit an answer{% endblock %}
 
 {% block content %}
+    <a href="/">
+        <div id="logo-container"></div>
+    </a>
+
+    <div class="form_layout">
+
         <h1 class="action_title">Edit an answer</h1>
+
         <form action="{{ url_for('edit_answer_post', answer_id=answer.id) }}" method="POST">
             <label for="edit_answer_message">Answer Description:</label><br>
             <textarea name="edit_answer_message" id="edit_answer_message" rows="10" cols="30" style="resize: none">{{ answer['message'] }}</textarea><br><br>
             <input type="submit" value="Edit an answer">
         </form>
+        <a href="{{ url_for('display_question', question_id=answer["question_id"])}}">
+            <button type="submit">Back to question</button>
+        </a>
+
+    </div>
 {% endblock %}
