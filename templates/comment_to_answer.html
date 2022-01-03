@@ -17,10 +17,10 @@
             <label for="answer_comment">Your comment:</label><br>
             <textarea name="answer_comment" id="answer_comment"></textarea><br><br>
             <input type="submit" value="Add comment">
-        </form><br>
 
-        <a href="{{ url_for('display_question', question_id=answer["question_id"])}}">
-            <button type="submit">Back to question</button>
-        </a>
+            <a href="{{ url_for('display_question', question_id=answer["question_id"])}}">
+                <button type="submit" class="back_to_question_btn">Back to question</button>
+            </a>
+        </form><br>
     </div>
 {% endblock %}

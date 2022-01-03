@@ -309,7 +309,7 @@ input[type=text], input[type=submit] {
     padding: 2vh 3vh 3vh 3vh;
 }
 
-input[type=text]{
+input[type=text] {
     font-family: Arial,serif;
     margin-top: 5px;
     line-height: 25px;
@@ -365,7 +365,6 @@ input[type="file"] + label {
     color: rgb(57,57,57);
     font-size: 1em;
     text-align: center;
-
 }
 
 input:hover + label{
@@ -380,7 +379,6 @@ input:hover + label{
 .paragraph_class {
     margin-top: 5px;
     padding: 5px 10px 0 10px;
-
 }
 
 p.paragraph_look {
@@ -393,4 +391,24 @@ p.paragraph_look {
 
 p.paragraph_look > span {
     font-weight: bolder;
+}
+
+button.back_to_question_btn {
+    background: white;
+    padding: 10px 15px;
+    margin: 8px 0;
+    color: rgb(57,57,57);
+    border-radius: 0 10px 10px 10px;
+    width: 20vw;
+    border: 1px solid rgb(57,57,57);
+    font-size: 1em;
+}
+
+button.back_to_question_btn:hover {
+    background: rgb(255, 159, 24);
+    border: none;
+    transition: 0.3s;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
 }

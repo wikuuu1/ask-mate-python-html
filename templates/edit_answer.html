@@ -13,11 +13,12 @@
             <label for="edit_answer_message">Answer Description:</label><br>
             <textarea name="edit_answer_message" id="edit_answer_message">{{ answer['message'] }}</textarea><br><br>
             <input type="submit" value="Edit an answer">
-        </form>
 
-        <a href="{{ url_for('display_question', question_id=answer["question_id"])}}">
-            <button type="submit">Back to question</button>
-        </a>
+            <a href="{{ url_for('display_question', question_id=answer["question_id"])}}">
+            <button type="submit" class="back_to_question_btn">Back to question</button>
+            </a>
+
+        </form>
 
     </div>
 {% endblock %}
