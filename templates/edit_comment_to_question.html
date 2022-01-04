@@ -16,7 +16,7 @@
 
         <form action="{{ url_for('edit_question_comment_post', comment_id=comment.id) }}" method="POST" class="action_form">
             <label for="message">Your comment:</label><br>
-            <textarea name="edit_comment_message" id="message">{{ comment.message }}</textarea><br><br>
+            <textarea name="edit_comment_message" id="message">{{ comment.message }}</textarea>
             <input type="submit" value="Edit comment">
 
             <div class="back_to_question_btn">
