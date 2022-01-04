@@ -4,7 +4,7 @@ import os
 import util
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = './static/upload'
+app.config['UPLOAD_FOLDER'] = 'static/upload'
 
 ORDER_BY = 'order_by'
 ORDER_BY_LABELS = {'submission_time': 'Time added',
@@ -74,9 +74,8 @@ def add_new_question_post():
     submission_time = util.get_actual_date()
     question_title = request.form['new_question']
     question_description = request.form['question_description']
-    path = ""
 
-    save_image_to_file(request.files)
+    path = save_image_to_file(request.files)
 
     new_table_row = [submission_time, '0', '0', question_title, question_description, path]
     question_id = data_manager.save_question_to_table(new_table_row)
@@ -102,6 +101,8 @@ def edit_question(question_id):
 def edit_question_post(question_id):
     title = request.form['edited_question']
     message = request.form['edited_description']
+    # path = save_image_to_file(request.files)
+
     data_manager.edit_question(question_id, title, message)
 
     return redirect(f'/question/{question_id}')
@@ -203,6 +204,24 @@ def add_comment_to_answer_post(answer_id):
     return redirect(f'/question/{question["question_id"]}')
 
 
+@app.route("/answer_comment/<int:comment_id>/edit", methods=["GET"])
+def edit_answer_comment(comment_id):
+    comment_to_edit = data_manager.get_comment_by_id(comment_id)
+    answer = data_manager.get_answer_by_id(comment_to_edit['answer_id'])
+
+    return render_template('edit_comment_to_answer.html',
+                           comment=comment_to_edit,
+                           answer=answer)
+
+
+@app.route("/answer_comment/<int:comment_id>/edit", methods=["POST"])
+def edit_answer_comment_post(comment_id):
+    message = request.form['edit_comment_message']
+    question_id = data_manager.edit_comment_in_database(comment_id, message)
+
+    return redirect(f'/question/{question_id}')
+
+
 @app.route("/question/<int:question_id>/vote_up", methods=["GET"])
 def up_vote_question(question_id):
     data_manager.update_vote_number(question_id, '+')
@@ -223,6 +242,7 @@ def save_image_to_file(files):
             file1 = request.files['image']
             path = os.path.join(app.config['UPLOAD_FOLDER'], file1.filename)
             file1.save(path)
+            return path
 
     except OSError:
         pass

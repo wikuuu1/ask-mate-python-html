@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block title%}Add new question{% endblock %}
 {% block content %}
+    <a href="/">
+        <div id="logo-container"></div>
+    </a>
 
     <div id="question-container">
 
@@ -25,7 +28,7 @@
                 {{ question.message }}
             </div>
             <div id="question-image-container">
-                {{ question.image }}
+                <img src="/{{ question.image }}" alt="{{ question.image }}" height="100%">
             </div>
         </div>
 
@@ -54,27 +57,28 @@
 
     </div>
     <br>
-    <p>Comment to questions:</p>
+    <h3>Comment to questions:</h3>
     {% for comment in question_comments %}
     <br>
         #{{ comment.id }}<br>
         {{ comment.message }}<br>
         {{ comment.submission_time }}<br>
         {{ comment.edited_count }}<br>
-            <div id="delete-comment-container">
-                <a href="{{ url_for('delete_question_comment', comment_id=comment.id, question_id=question.id) }}">
-                    <button type="submit">Delete comment</button>
-                </a>
-            </div>
-            <div id="edit-comment-container">
-                <a href="{{ url_for('edit_question_comment', comment_id=comment.id)}}">
-                    <button type="submit">Edit comment</button>
-                </a>
-            </div>
+
+        <div id="edit-comment-container">
+            <a href="{{ url_for('edit_question_comment', comment_id=comment.id)}}">
+                <button type="submit">Edit comment</button>
+            </a>
+        </div>
+        <div id="delete-comment-container">
+            <a href="{{ url_for('delete_question_comment', comment_id=comment.id, question_id=question.id) }}">
+                <button type="submit">Delete comment</button>
+            </a>
+        </div>
     {% endfor %}
     <br>
 
-    <p>Answers:</p>
+    <h3>Answers:</h3>
 
     {% for answer in answers %}
     <br>
@@ -88,15 +92,15 @@
 
             {{ answer.image }}<br>
 
+        <div id="edit-answer-container">
+            <a href="{{ url_for('edit_answer', answer_id=answer.id)}}">
+                <button type="submit">Edit an answer</button>
+            </a>
+        </div>
 
         <div id="delete-answer-container">
             <a href="{{ url_for('delete_answer', question_id=question.id, answer_id=answer.id) }}">
                 <button type="submit">Delete answer</button>
-            </a>
-        </div>
-        <div id="edit-answer-container">
-            <a href="{{ url_for('edit_answer', answer_id=answer.id)}}">
-                <button type="submit">Edit an answer</button>
             </a>
         </div>
         <div id="answer-comment-container">
@@ -104,7 +108,8 @@
                 <button type="submit">Add comment to answer</button>
             </a>
         </div>
-        <p>Comments to answer:</p>
+
+        <h3>Comments to answer:</h3>
         {% set outer_loop = loop %}
 
         {% for a_comment in answers_comments[outer_loop.index - 1] %}
@@ -113,6 +118,19 @@
             {{ a_comment.message }}<br>
             {{ a_comment.submission_time }}<br>
             {{ a_comment.edited_count }}<br>
+
+            <div id="edit-answer-comment-container">
+                <a href="{{ url_for('edit_answer_comment', comment_id=a_comment.id)}}">
+                        <button type="submit">Edit comment</button>
+                </a>
+            </div>
+
+            <div id="delete-answer-comment-container">
+                <a href="{{ url_for('delete_question_comment', comment_id=a_comment.id, question_id=question.id) }}">
+                    <button type="submit">Delete comment</button>
+                </a>
+            </div>
+
         {% endfor %}
 
 
