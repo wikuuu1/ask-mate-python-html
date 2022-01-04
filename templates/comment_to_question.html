@@ -16,7 +16,7 @@
 
         <form action="/question/{{ question['id'] }}/new-comment" method="POST" class="action_form">
             <label for="comment">Your comment:</label><br>
-            <textarea name="comment" id="comment"></textarea><br><br>
+            <textarea name="comment" id="comment"></textarea>
             <input type="submit" value="Add your comment">
             <a href="{{ url_for('display_question', question_id=question.id)}}" style="text-decoration: none"><div class="back_to_question_btn">Back to question</div></a>
         </form>

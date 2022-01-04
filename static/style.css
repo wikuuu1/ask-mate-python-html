@@ -335,11 +335,10 @@ form textarea {
 }
 
 input[type=submit] {
+    font-family: Arial,serif;
     display: block;
     background: white;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 1rem auto;
     padding: 10px 15px;
     color: rgb(57,57,57);
     width: 17rem;
@@ -356,30 +355,34 @@ input[type="submit"]:hover {
 }
 
 input[type="file"] {
-      height: 0;
-      overflow: hidden;
-      width: 0;
+    font-family: Arial,serif;
+    height: 0;
+    overflow: hidden;
+    width: 0;
 }
 
 input[type="file"] + label {
-    width: 100%;
+    font-family: Arial,serif;
+    width: 17rem;
     display: block;
+    margin-left: auto;
+    margin-right: auto;
     background: rgb(250,250,250);
     padding: 10px 0;
     border: 1px solid rgb(57,57,57);
     border-radius: 0 10px 10px 10px;
     color: rgb(57,57,57);
-    font-size: 1em;
+    font-size: 1rem;
     text-align: center;
 }
 
 input:hover + label{
     background: rgb(255, 159, 24);
-    border: none;
-    transition: 0.3s;
-    font-size: 1em;
+    border-color: rgb(255, 159, 24);
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.5s;
 }
 
 .paragraph_class {
@@ -400,12 +403,10 @@ p.paragraph_look > span {
 }
 
 .back_to_question_btn {
+    font-family: Arial,serif;
     background: white;
     padding: 10px 15px;
-    margin-top: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1rem;
+    margin: 1rem auto;
     color: rgb(57,57,57);
     border-radius: 0 10px 10px 10px;
     border: 1px solid rgb(57,57,57);

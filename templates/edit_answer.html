@@ -11,7 +11,7 @@
 
         <form action="{{ url_for('edit_answer_post', answer_id=answer.id) }}" method="POST" class="action_form">
             <label for="edit_answer_message">Answer Description:</label><br>
-            <textarea name="edit_answer_message" id="edit_answer_message">{{ answer['message'] }}</textarea><br><br>
+            <textarea name="edit_answer_message" id="edit_answer_message">{{ answer['message'] }}</textarea>
             <input type="submit" value="Edit an answer">
 
             <a href="{{ url_for('display_question', question_id=answer['question_id'])}}" style="text-decoration: none"><div class="back_to_question_btn">Back to question</div></a>
