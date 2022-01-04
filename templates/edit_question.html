@@ -13,7 +13,11 @@
             <label for="edited_question">Question Title:</label><br>
             <input type="text" id="edited_question" name="edited_question" value="{{ question['title'] }}"><br><br>
             <label for="edited_description">Question Description:</label><br>
-            <textarea name="edited_description" id="question_description">{{ question['message'] }}</textarea><br><br>
+            <textarea name="edited_description" id="question_description">{{ question['message'] }}</textarea><br>
+
+{#            <input type="file" id="file" name="image"/>#}
+{#            <label for="file" class="btn">Add an image</label>#}
+
             <input type="submit" value="Edit question">
 
             <div class="back_to_question_btn">
