@@ -16,10 +16,12 @@
        </div>
 
         <form action="/question/{{ question['id'] }}/new-answer" method="POST" class="action_form">
-            <label for="answer_description">Here write your answer:</label><br>
+            <label for="answer_description">Write your answer here:</label><br>
             <textarea name="answer_description" id="answer_description"></textarea><br><br>
             <input type="submit" value="Add your answer">
         </form>
+        <a href="{{ url_for('display_question', question_id=question.id)}}" style="text-decoration: none"><div class="back_to_question_btn">Back to question</div></a>
+
 
     </div>
 {% endblock %}

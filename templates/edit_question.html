@@ -20,10 +20,7 @@
 
             <input type="submit" value="Edit question">
 
-            <div class="back_to_question_btn">
-                <a href="{{ url_for('display_question', question_id=question.id)}}" >Back to question</a>
-            </div>
-
+            <a href="{{ url_for('display_question', question_id=question.id)}}" style="text-decoration: None"><div class="back_to_question_btn">Back to question</div></a>
         </form>
 
     </div>
