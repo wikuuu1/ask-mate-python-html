@@ -281,32 +281,29 @@ div.form_layout {
     font-family: Arial, monospace;
     margin: 2.5rem;
     font-size: 1rem;
-    border: rgb(57,57,57) 6px solid;
-    border-radius: 20px 20px 20px 20px;
+    border: 6px solid rgb(57,57,57);
+    border-radius: 20px;
 }
 
 h1.action_title {
     text-align: center;
-    /*vertical-align: middle;*/
     padding-bottom: 20px;
     padding-top: 14px;
     background: rgb(57,57,57);
     font-size: 1.7rem;
-    /*border: 1px solid rgb(57,57,57);*/
     color: white;
-    border-radius: 0px 0px 0px 0px;
     letter-spacing: 3px;
 
 }
 input[type=text], input[type=submit] {
     border-radius: 0 10px 10px 10px;
     border: 1px solid rgb(57,57,57);
-    font-size: 1em;
+    font-size: 1.1em;
     width: 100%;
 }
 
 .action_form {
-    padding: 2vh 3vw 0vh 3vw;
+    padding: 2vh 3vw 0 3vw;
 }
 
 input[type=text] {
@@ -316,10 +313,10 @@ input[type=text] {
 }
 
 label:not(label[for="order_by"], label[for="order-direction"], label[for="file"]){
+    width: 100%;
     font-size: 1.1em;
     font-weight: bold;
     color: rgb(57,57,57);
-    width: 100%;
 }
 
 form textarea {
@@ -333,17 +330,17 @@ form textarea {
     font-size: 1em;
     resize: none;
 }
-
 input[type=submit] {
     font-family: Arial,serif;
     display: block;
-    background: white;
+    width: 17rem;
+    background: rgb(255,255,255);
     margin: 1rem auto;
     padding: 10px 15px;
     color: rgb(57,57,57);
-    width: 17rem;
     font-size: 1rem;
 }
+
 
 input[type="submit"]:hover {
     background: rgb(255, 159, 24);
@@ -404,15 +401,15 @@ p.paragraph_look > span {
 
 .back_to_question_btn {
     font-family: Arial,serif;
-    background: white;
+    width: 15rem;
     padding: 10px 15px;
     margin: 1rem auto;
+    background: white;
     color: rgb(57,57,57);
     border-radius: 0 10px 10px 10px;
     border: 1px solid rgb(57,57,57);
     font-size: 1rem;
     text-align: center;
-    width: 15rem;
 }
 
 .back_to_question_btn:hover {
