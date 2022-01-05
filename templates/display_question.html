@@ -1,157 +1,308 @@
 {% extends 'base.html' %}
-{% block title%}Add new question{% endblock %}
+{% block title%}Question details{% endblock %}
 {% block content %}
-    <a href="/">
-        <div id="logo-container"></div>
-    </a>
-        <div class="question-on-list">
-            <div class="question-title-overflowing">
-                    <div class="title">
-                        {{ question['title'] }}
+    <!-- Sticky container -->
+    <table class="sticky" style="width: 100%; background-color: rgb(215,215,215); border-bottom: 2px solid;border-color: rgb(57,57,57)">
+        <tbody>
+            <tr>
+                <td style="vertical-align: middle; width: 337px">
+                    <a href="/">
+                        <div id="logo-container"></div>
+                    </a>
+
+                </td>
+                <td style="vertical-align: bottom; padding-bottom: 2rem; padding-right: 2.5rem">
+                    <div style="display: flex; justify-content: center">
+                        <a href="{{ url_for('add_new_answer', question_id=question.id) }}">
+                            <div id="answer-question-btn"></div>
+                        </a>
                     </div>
-            </div>
-            <table style="width: 100%">
-                <tr style="height: 1px">
-                    <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem">
-                        <div style="text-align: center">
-                            <img src='/static/img/clock.png' style="width: 1rem; height: 1rem; position: center">
-                            <br>
-                            <p style="width: 10ch; padding-bottom: 1rem">
-                                {{ question['submission_time'] }}
-                            </p>
+                </td>
+                <td style="width: 16rem;padding-top: 1rem">
+                    <form action="/list">
+                        <div id="ordering-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="padding-left: 2rem; padding-right: 2rem;text-align: right; height: 3rem; font-size: 1.3rem; vertical-align: middle" colspan="2">
+                                            FIND ANSWERS
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: right; padding-right: 1.5rem";>
+                                            <label for="order-by">
+                                                BY:
+                                            </label>
+                                            <select id="order-by" name="order_by">
+                                                {% for key in order_by_labels %}
+                                                    {% if key == current_order_by %}
+                                                        <option selected label="{{ order_by_labels[key] }}">
+                                                            {{ key }}
+                                                        </option>
+                                                    {% else %}
+                                                        <option label="{{ order_by_labels[key] }}">
+                                                            {{ key }}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td style="text-align: left; height: 2.8rem; vertical-align: middle; width: 2rem; padding-right: 1.5rem; padding-bottom: 1.1rem" rowspan="2">
+                                            <div id="check-button-container" style="background-position: left;min-width: 2rem">
+                                                <input type="image" src='/static/img/opaque.png' style="width: 2rem; height: 2.8rem; min-width: 2rem; vertical-align: middle"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right;padding-right: 1.5rem; padding-top: 0.2rem; padding-bottom: 1.1rem">
+                                            <label for="order-direction">
+                                                DIR:
+                                            </label>
+                                            <select id="order-direction" name="order_direction">
+                                                {% for key in order_dir_labels %}
+                                                    {% if key == current_order_dir %}
+                                                        <option selected label="{{ order_dir_labels[key] }}">
+                                                            {{ key }}
+                                                        </option>
+                                                    {% else %}
+                                                        <option label="{{ order_dir_labels[key] }}">
+                                                            {{ key }}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </td>
-                    <td style="padding: 1rem; vertical-align: top; height: 100%">
-                        <div class="message-overflowing">
-                            {{ question['message'] }}
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <!-- The Question -->
+    <div class="question-on-list">
+        <div class="question-title-overflowing">
+                <div class="title">
+                    {{ question['title'] }}
+                </div>
+        </div>
+        <table style="width: 100%">
+            <tr style="height: 1px">
+                <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem" rowspan="2">
+                    <div style="text-align: center">
+                        <img src='/static/img/clock.png' style="width: 1rem; height: 1rem; position: center">
+                        <br>
+                        <p style="width: 10ch; padding-bottom: 1rem">{{ question['submission_time'] }}</p>
+                    </div>
+                </td>
+                <td style="padding: 1rem 1rem 0rem;vertical-align: top; height: 100%">
+                    <div class="message-overflowing">{{ question['message'] }}</div>
+                </td>
+                <td style="vertical-align: top; text-align: right; width: 4rem" rowspan="2">
+                    <div class="views">
+                        <div style="padding-top: 0.65rem; padding-left: 0.5rem; padding-right: 0.5rem">{{ question['view_number'] }}</div>
+                        <img src='/static/img/eye.png' style="float: right; width: 1.5rem; height: 1.5rem; padding-top: 0.65rem">
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 50%">
+                        <div class="votes">
+                            <a href="{{ url_for('up_vote_question', question_id=question.id) }}">
+                                <div id="upvote"></div>
+                            </a>
+                            <div style="float: right; padding-top: 0.25rem; padding-left: 0.5rem; padding-right:0.5rem">{{ question['vote_number'] }}</div>
+
+                            <a href="{{ url_for('down_vote_question', question_id=question.id) }}">
+                                <div id="downvote"></div>
+                            </a>
                         </div>
-                    </td>
-                    <td style="vertical-align: top; text-align: right">
-                        <div class="views">
-                            <div style="padding-top: 0.65rem; padding-left: 0.5rem; padding-right: 0.5rem">
-                                {{ question['view_number'] }}
-                            </div>
-                            <img src='/static/img/eye.png' style="float: right; width: 1.5rem; height: 1.5rem; padding-top: 0.65rem">
-                        </div>
-                        <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 50%">
-                            <div class="votes">
-                                <a href="{{ url_for('up_vote_question', question_id=question.id) }}">
-                                    <div id="upvote">
-                                    </div>
-                                </a>
-                                <div style="float: right; padding-top: 0.25rem; padding-left: 0.5rem; padding-right:0.5rem">
-                                    {{ question['vote_number'] }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 100%; text-align: center">
+                        <div id="disp-question-btn-container">
+                            <a href="{{ url_for('edit_question', question_id=question.id) }}">
+                                <div class="tooltip" id="edit-content-btn">
+                                    <span class="tooltip-text-right">Edit</span>
                                 </div>
-
-                                <a href="{{ url_for('down_vote_question', question_id=question.id) }}">
-                                    <div id="downvote">
-                                    </div>
-                                </a>
-                            </div>
+                            </a>
                         </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div style="width: 90%; text-align: center">
-            <div id="disp-question-btn-container">
-                <a href="{{ url_for('add_new_answer', question_id=question.id) }}">
-                    <button type="submit" class="submit-btn">Add new answer</button>
-                </a>
-            </div>
-            <div id="disp-question-btn-container">
-                <a href="{{ url_for('edit_question', question_id=question.id) }}">
-                    <button type="submit" class="submit-btn">Edit question</button>
-                </a>
-            </div>
-            <div id="disp-question-btn-container">
-                <a href="{{ url_for('delete_question', question_id=question.id) }}">
-                    <button type="submit" class="submit-btn">Delete question</button>
-                </a>
-            </div>
-            <div id="disp-question-btn-container">
-                <a href="{{ url_for('add_new_comment_to_question', question_id=question.id) }}">
-                    <button type="submit" class="submit-btn">Add comment</button>
-                </a>
-            </div>
-        </div>
-
+                        <div id="disp-question-btn-container">
+                            <a href="{{ url_for('delete_question', question_id=question.id) }}">
+                                <div class="tooltip" id="delete-content-btn">
+                                    <span class="tooltip-text-right">Delete</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="disp-question-btn-container">
+                            <a href="{{ url_for('add_new_comment_to_question', question_id=question.id) }}">
+                                <div class="tooltip" id="comment-content-btn">
+                                    <span class="tooltip-text-right">Comment</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <br>
-    <h3>Comment to questions:</h3>
+    <!-- Question Comments -->
     {% for comment in question_comments %}
-    <br>
-        #{{ comment.id }}<br>
-        {{ comment.message }}<br>
-        {{ comment.submission_time }}<br>
-        {{ comment.edited_count }}<br>
+    <div class="question-comment">
+        <table style="width: 100%">
+            <tr style="height: 1px">
+                <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 0.3rem; padding-left: 1rem">
+                    <div style="text-align: center">
+                        <img src='/static/img/clock.png' style="width: 1rem; height: 1rem; position: center">
+                        <br>
+                        <p style="width: 10ch; padding-bottom: 0.3rem">{{ comment['submission_time'] }}</p>
+                    </div>
+                </td>
+                <td style="padding: 1rem 1rem 1rem;vertical-align: top; height: 100%">
+                    <div class="message-overflowing">{{ comment['message'] }}</div>
+                </td>
+                <td style="vertical-align: top; text-align: right; width: 4rem">
+                    <div style="display: flex; flex-direction: column; justify-content: flex-start; height: 50%">
+                        <div id="disp-question-btn-container" style="margin-right: 0.6rem">
+                            <a href="{{ url_for('edit_question_comment', comment_id=comment.id)}}">
+                                <div class="tooltip" id="edit-content-btn">
+                                    <span class="tooltip-text-right">Edit</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 50%">
+                        <div id="disp-question-btn-container" style="margin-right: 0.6rem">
+                            <a href="{{ url_for('delete_question_comment', question_id=question.id, comment_id=comment.id) }}">
+                                <div class="tooltip" id="delete-content-btn">
+                                    <span class="tooltip-text-right">Delete</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 100%; text-align: center">
 
-        <div id="edit-comment-container">
-            <a href="{{ url_for('edit_question_comment', comment_id=comment.id)}}">
-                <button type="submit">Edit comment</button>
-            </a>
-        </div>
-        <div id="delete-comment-container">
-            <a href="{{ url_for('delete_question_comment', comment_id=comment.id, question_id=question.id) }}">
-                <button type="submit">Delete comment</button>
-            </a>
-        </div>
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br>
     {% endfor %}
     <br>
-
-    <h3>Answers:</h3>
-
+    <!-- Question Answers -->
     {% for answer in answers %}
     <br>
-            #{{ answer.id }}<br>
+    <div class="answer-on-list">
+        <table style="width: 100%">
+            <tr style="height: 1px">
+                <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem" rowspan="2">
+                    <div style="text-align: center">
+                        <img src='/static/img/clock.png' style="width: 1rem; height: 1rem; position: center">
+                        <br>
+                        <p style="width: 10ch; padding-bottom: 1rem">{{ answer['submission_time'] }}</p>
+                    </div>
+                </td>
+                <td style="padding: 1rem 1rem 0rem;vertical-align: top; height: 100%">
+                    <div class="message-overflowing">{{ answer['message'] }}</div>
+                </td>
+                <td style="vertical-align: top; text-align: right; width: 7.5rem" rowspan="2">
+                    <div class="views"></div>
+                    <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 50%">
+                        <div class="votes">
+                            <a href="{{ url_for('up_vote_answer', question_id=question.id, answer_id=answer.id) }}">
+                                <div id="upvote"></div>
+                            </a>
+                            <div style="float: right; padding-top: 0.25rem; padding-left: 0.5rem; padding-right:0.5rem">{{ answer['vote_number'] }}</div>
 
-            {{ answer.submission_time }}<br>
-
-            Votes: {{ answer.vote_number }}<br>
-
-            {{ answer.message }}<br>
-
-            {{ answer.image }}<br>
-
-        <div id="edit-answer-container">
-            <a href="{{ url_for('edit_answer', answer_id=answer.id)}}">
-                <button type="submit">Edit an answer</button>
-            </a>
-        </div>
-
-        <div id="delete-answer-container">
-            <a href="{{ url_for('delete_answer', question_id=question.id, answer_id=answer.id) }}">
-                <button type="submit">Delete answer</button>
-            </a>
-        </div>
-        <div id="answer-comment-container">
-            <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}">
-                <button type="submit">Add comment to answer</button>
-            </a>
-        </div>
-
-        <h3>Comments to answer:</h3>
-        {% set outer_loop = loop %}
-
+                            <a href="{{ url_for('down_vote_answer', question_id=question.id, answer_id=answer.id) }}">
+                                <div id="downvote"></div>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                                        <div style="width: 100%; text-align: center">
+                        <div id="answer-btn-container">
+                            <a href="{{ url_for('edit_answer', answer_id=answer.id) }}">
+                                <div class="tooltip" id="edit-content-btn">
+                                    <span class="tooltip-text-right">Edit</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="answer-btn-container">
+                            <a href="{{ url_for('delete_answer', question_id=question.id, answer_id=answer.id) }}">
+                                <div class="tooltip" id="delete-content-btn">
+                                    <span class="tooltip-text-right">Delete</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div id="answer-btn-container">
+                            <a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}">
+                                <div class="tooltip" id="comment-content-btn">
+                                    <span class="tooltip-text-right">Comment</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <!-- Comments for answer -->
+    {% set outer_loop = loop %}
         {% for a_comment in answers_comments[outer_loop.index - 1] %}
+            <div class="comment-for-answer">
+                <table style="width: 100%">
+                    <tr style="height: 1px">
+                        <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem" rowspan="2">
+                            <div style="text-align: center">
+                                <img src='/static/img/clock.png' style="width: 1rem; height: 1rem; position: center">
+                                <br>
+                                <p style="width: 10ch; padding-bottom: 1rem">{{ a_comment['submission_time'] }}</p>
+                            </div>
+                        </td>
+                        <td style="padding: 1rem 1rem 0rem;vertical-align: top; height: 100%">
+                            <div class="message-overflowing">{{ a_comment['message'] }}</div>
+                        </td>
+                        <td style="vertical-align: top; text-align: right; width: 4rem">
+                            <div style="display: flex; flex-direction: column; justify-content: flex-start; height: 50%">
+                                <div id="disp-question-btn-container" style="margin-right: 0.6rem">
+                                    <a href="{{ url_for('edit_answer_comment', comment_id=a_comment.id)}}">
+                                        <div class="tooltip" id="edit-content-btn">
+                                            <span class="tooltip-text-left">Edit</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 50%">
+                                <div id="disp-question-btn-container" style="margin-right: 0.6rem">
+                                    <a href="{{ url_for('delete_question_comment', comment_id=a_comment.id) }}">
+                                        <div class="tooltip" id="delete-content-btn">
+                                            <span class="tooltip-text-left">Delete</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <br>
-            comment id: {{ a_comment.id }}<br>
-            {{ a_comment.message }}<br>
-            {{ a_comment.submission_time }}<br>
-            {{ a_comment.edited_count }}<br>
-
-            <div id="edit-answer-comment-container">
-                <a href="{{ url_for('edit_answer_comment', comment_id=a_comment.id)}}">
-                        <button type="submit">Edit comment</button>
-                </a>
-            </div>
-
-            <div id="delete-answer-comment-container">
-                <a href="{{ url_for('delete_question_comment', comment_id=a_comment.id, question_id=question.id) }}">
-                    <button type="submit">Delete comment</button>
-                </a>
-            </div>
-
         {% endfor %}
 
 

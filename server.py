@@ -235,6 +235,19 @@ def down_vote_question(question_id):
 
     return redirect('/')
 
+@app.route("/question/<int:question_id>/<int:answer_id>/vote_up", methods=["GET"])
+def up_vote_answer(answer_id):
+    data_manager.update_vote_number(answer_id, '+')
+
+    return redirect('/question/<int:question_id>')
+
+
+@app.route("/question/<int:question_id>/<int:answer_id>/vote_down", methods=["GET"])
+def down_vote_answer(answer_id):
+    data_manager.update_vote_number(answer_id, '-')
+
+    return redirect('/question/<int:question_id>')
+
 
 def save_image_to_file(files):
     try:  # saving image to file

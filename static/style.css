@@ -24,6 +24,7 @@ body {
 .sticky{
     position: sticky;
     top: 0;
+    z-index: 10
 }
 
 #logo-container {
@@ -42,6 +43,8 @@ body {
 
 #question-button-container {
     background: url('/static/img/question_button.png') no-repeat center;
+    display: flex;
+    justify-content: center;
     width:250px;
     height:40px;
     background-size: 250px 40px;
@@ -49,8 +52,6 @@ body {
 
 #question-button-container:hover {
     background: url('/static/img/question_button_hover.png') no-repeat center;
-    display: flex;
-    justify-content: center;
     width:250px;
     height:40px;
     background-size: 250px 40px;
@@ -104,8 +105,53 @@ select {
     border-collapse: collapse;
     border: rgb(57,57,57) 5px solid;
     border-left-width: 0;
-    width: 90%;
     border-radius: 0 30px 30px 0;
+    max-width: 95%;
+    width: fit-content;
+}
+
+.answer-on-list {
+    background-color: rgb(255,255,255);
+    border-collapse: collapse;
+    border: rgb(255, 159, 24) 5px solid;
+    border-right-width: 0;
+    border-radius: 30px 0 0 30px;
+    margin-left: auto;
+    margin-right: 0px;
+    max-width: 95%;
+    width: fit-content;
+}
+
+.comment-for-answer {
+    background-color: rgb(255,255,255);
+    border-collapse: collapse;
+    border: rgb(101, 101, 101) 3px solid;
+    border-right-width: 0;
+    border-radius: 30px 0 0 30px;
+    margin-left: auto;
+    margin-right: 0px;
+    max-width: 90%;
+    width: fit-content;
+}
+
+.question-comment {
+    background-color: rgb(255,255,255);
+    border-collapse: collapse;
+    border: rgb(101,101,101) 3px solid;
+    border-left-width: 0;
+    border-radius: 0 30px 30px 0;
+    max-width: 90%;
+    width: fit-content;
+}
+
+.single-question-on-list {
+    background-color: rgb(255,255,255);
+    border-collapse: collapse;
+    border: rgb(57,57,57) 5px solid;
+    border-left-width: 0;
+    border-radius: 0 30px 30px 0;
+    width: 100%;
+    height: 100%;
 }
 
 .question-title{
@@ -149,7 +195,7 @@ select {
     font-size: 1.3rem;
     font-family: Arial,serif;
     display: -webkit-box;
-    max-width: 100%;
+    width: 100%;
     -webkit-box-orient: vertical;
     line-height: 1.2
 }
@@ -184,7 +230,7 @@ select {
     justify-content: flex-end;
     font-size: 1rem;
     padding-right: 1rem;
-    padding-bottom: 1rem;
+    padding-bottom: 0.5rem;
     font-family: Aquire,serif;
 }
 
@@ -268,7 +314,12 @@ select {
 }
 
 #disp-question-btn-container {
-    margin: 1rem;
+    margin: 0.75rem 1.5rem;
+    display: inline-block;
+}
+
+#answer-btn-container {
+    margin: 0.75rem 1.5rem;
     display: inline-block;
 }
 
@@ -433,7 +484,100 @@ p.paragraph_look > span {
     text-align: center;
 }
 
+/*TOOLTIP TEXT OBJECT*/
+.tooltip-text-left,
+.tooltip-text-right{
+    visibility: hidden;
+    width: 80px;
+    background-color: rgb(255, 159, 24);
+    color: #000;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    text-decoration: none;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip{
+    position:relative;
+}
+
+.tooltip .tooltip-text-right{
+    top: 2rem;
+    left: 2rem;
+}
+
+.tooltip .tooltip-text-left{
+    top: 2rem;
+    right: 2rem;
+}
+
+.tooltip:hover .tooltip-text-right{
+    visibility: visible;
+}
+
+.tooltip:hover .tooltip-text-left{
+    visibility: visible;
+}
+
 /*DISPLAY QUESTION LAYOUT*/
+#edit-content-btn {
+    background: url('/static/img/pencil.png') no-repeat center;
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+}
+
+#edit-content-btn:hover {
+    background: url('/static/img/pencil_hover.png') no-repeat center;
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+}
+
+#delete-content-btn {
+    background: url('/static/img/delete.png') no-repeat center;
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+}
+
+#delete-content-btn:hover {
+    background: url('/static/img/delete_hover.png') no-repeat center;
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+}
+
+#comment-content-btn {
+    background: url('/static/img/comment.png') no-repeat center;
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+}
+
+#comment-content-btn:hover {
+    background: url('/static/img/comment_hover.png') no-repeat center;
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
+}
+
+#answer-question-btn {
+    background: url('/static/img/new_answer_button.png') no-repeat center;
+    display: flex;
+    justify-content: center;
+    width: 217px;
+    height: 40px;
+    background-size: 217px 40px;
+}
+
+#answer-question-btn:hover {
+    background: url('/static/img/new_answer_button_hover.png') no-repeat center;
+    background-size: 217px 40px;
+}
+
 button.submit-btn {
     font-family: Arial,serif;
     width: 12rem;
