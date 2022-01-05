@@ -9,12 +9,11 @@
 
         <div id="header-container">
             <div id="question-id-container">
-                #{{ question.id }}
-                <br>
-                {{ question.submission_time }}
+                <p class="id">#{{ question.id }}</p>
+                <p class="time">{{ question.submission_time }}</p>
             </div>
             <div id="question-title-container">
-                {{ question.title }}
+                <p>{{ question.title }}</p>
             </div>
         </div>
 
@@ -28,29 +27,29 @@
                 {{ question.message }}
             </div>
             <div id="question-image-container">
-                <img src="/{{ question.image }}" alt="{{ question.image }}" height="100%">
+                <img class="question_img" src="/{{ question.image }}" alt="{{ question.image }}">
             </div>
         </div>
 
         <div id="options-container">
             <div id="add-answer-container">
                 <a href="{{ url_for('add_new_answer', question_id=question.id) }}">
-                    <button type="submit">Add new answer</button>
+                    <button type="submit" class="submit-btn">Add new answer</button>
                 </a>
             </div>
             <div id="edit-question-container">
                 <a href="{{ url_for('edit_question', question_id=question.id) }}">
-                    <button type="submit">Edit question</button>
+                    <button type="submit" class="submit-btn">Edit question</button>
                 </a>
             </div>
             <div id="delete-question-container">
                 <a href="{{ url_for('delete_question', question_id=question.id) }}">
-                    <button type="submit">Delete question</button>
+                    <button type="submit" class="submit-btn">Delete question</button>
                 </a>
             </div>
             <div id="add-comment-to-question-container">
                 <a href="{{ url_for('add_new_comment_to_question', question_id=question.id) }}">
-                    <button type="submit">Add comment</button>
+                    <button type="submit" class="submit-btn">Add comment</button>
                 </a>
             </div>
         </div>
