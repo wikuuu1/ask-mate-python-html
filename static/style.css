@@ -99,7 +99,7 @@ select {
     background-color: rgb(57,57,57);
 }
 
-#question-on-list {
+.question-on-list {
     background-color: rgb(255,255,255);
     border-collapse: collapse;
     border: rgb(57,57,57) 5px solid;
@@ -108,7 +108,7 @@ select {
     border-radius: 0 30px 30px 0;
 }
 
-#question-title{
+.question-title{
     font-family: Arial, serif;
     text-align:center;
     background-color: rgb(57,57,57);
@@ -119,6 +119,18 @@ select {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 1.5
+}
+
+.question-title-overflowing {
+    font-family: Arial, serif;
+    text-align:center;
+    background-color: rgb(57,57,57);
+    padding-bottom: 0.5rem;
+    border-top-right-radius: 20px;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-box-orient: vertical;
     line-height: 1.5
 }
 
@@ -133,6 +145,15 @@ select {
     line-height: 1.2
 }
 
+.message-overflowing{
+    font-size: 1.3rem;
+    font-family: Arial,serif;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-box-orient: vertical;
+    line-height: 1.2
+}
+
 .link {
     color:white;
     font-size: 2rem;
@@ -140,6 +161,11 @@ select {
 
 .link:hover {
     color: rgb(255, 159, 24);
+}
+
+.title {
+    color:white;
+    font-size: 2rem;
 }
 
 .views {
@@ -191,7 +217,7 @@ select {
 }
 
 #header-container {
-    height: 15%;
+    height: 3.5rem;
     width: 100%;
     background: rgb(57,57,57);
     border-top-right-radius: 20px;
@@ -201,9 +227,6 @@ select {
     height: 70%;
     width: 100%;
     border-bottom: 1px solid rgb(57,57,57);
-}
-#options-container {
-    height: 15%;
 }
 
 #question-id-container {
@@ -244,16 +267,10 @@ select {
     height: 100%;
 }
 
-#add-answer-container,
-#edit-question-container,
-#delete-question-container,
-#add-comment-to-question-container {
-    height: 100%;
-    margin-top: 10px;
-    padding: 0 0 0 10vw;
-    float: left;
+#disp-question-btn-container {
+    margin: 1rem;
+    display: inline-block;
 }
-
 
 /*FORMS LAYOUT*/
 div.form_layout {
@@ -417,36 +434,6 @@ p.paragraph_look > span {
 }
 
 /*DISPLAY QUESTION LAYOUT*/
-#question-container {
-    height: 400px;
-    background-color: rgb(255,255,255);
-    border-collapse: collapse;
-    border: 6px solid rgb(57,57,57);
-    border-radius: 0 30px 30px 0;
-}
-
-#question-title-container {
-    font-family: Arial, serif;
-    text-align: center;
-    border-top-right-radius: 20px;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-#question-title-container p {
-    padding-top: 1px;
-    color: white;
-    font-size: 2rem;
-    letter-spacing: 3px;
-}
-
-#question-id-container p {
-    line-height: 25px;
-
-}
-
 button.submit-btn {
     font-family: Arial,serif;
     width: 12rem;

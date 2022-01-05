@@ -4,57 +4,79 @@
     <a href="/">
         <div id="logo-container"></div>
     </a>
-
-    <div id="question-container">
-
-        <div id="header-container">
-            <div id="question-id-container">
-                <p class="id">#{{ question.id }}</p>
-                <p class="time">{{ question.submission_time }}</p>
+        <div class="question-on-list">
+            <div class="question-title-overflowing">
+                    <div class="title">
+                        {{ question['title'] }}
+                    </div>
             </div>
-            <div id="question-title-container">
-                <p>{{ question.title }}</p>
-            </div>
+            <table style="width: 100%">
+                <tr style="height: 1px">
+                    <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem">
+                        <div style="text-align: center">
+                            <img src='/static/img/clock.png' style="width: 1rem; height: 1rem; position: center">
+                            <br>
+                            <p style="width: 10ch; padding-bottom: 1rem">
+                                {{ question['submission_time'] }}
+                            </p>
+                        </div>
+                    </td>
+                    <td style="padding: 1rem; vertical-align: top; height: 100%">
+                        <div class="message-overflowing">
+                            {{ question['message'] }}
+                        </div>
+                    </td>
+                    <td style="vertical-align: top; text-align: right">
+                        <div class="views">
+                            <div style="padding-top: 0.65rem; padding-left: 0.5rem; padding-right: 0.5rem">
+                                {{ question['view_number'] }}
+                            </div>
+                            <img src='/static/img/eye.png' style="float: right; width: 1.5rem; height: 1.5rem; padding-top: 0.65rem">
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 50%">
+                            <div class="votes">
+                                <a href="{{ url_for('up_vote_question', question_id=question.id) }}">
+                                    <div id="upvote">
+                                    </div>
+                                </a>
+                                <div style="float: right; padding-top: 0.25rem; padding-left: 0.5rem; padding-right:0.5rem">
+                                    {{ question['vote_number'] }}
+                                </div>
+
+                                <a href="{{ url_for('down_vote_question', question_id=question.id) }}">
+                                    <div id="downvote">
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
-        <div id="message-container">
-            <div id="question-views-container">
-                Views: {{ question.view_number }}
-                <br>
-                Votes: {{ question.vote_number }}
-            </div>
-            <div id="question-message-container">
-                {{ question.message }}
-            </div>
-            <div id="question-image-container">
-                <img class="question_img" src="/{{ question.image }}" alt="{{ question.image }}">
-            </div>
-        </div>
-
-        <div id="options-container">
-            <div id="add-answer-container">
+        <div style="width: 90%; text-align: center">
+            <div id="disp-question-btn-container">
                 <a href="{{ url_for('add_new_answer', question_id=question.id) }}">
                     <button type="submit" class="submit-btn">Add new answer</button>
                 </a>
             </div>
-            <div id="edit-question-container">
+            <div id="disp-question-btn-container">
                 <a href="{{ url_for('edit_question', question_id=question.id) }}">
                     <button type="submit" class="submit-btn">Edit question</button>
                 </a>
             </div>
-            <div id="delete-question-container">
+            <div id="disp-question-btn-container">
                 <a href="{{ url_for('delete_question', question_id=question.id) }}">
                     <button type="submit" class="submit-btn">Delete question</button>
                 </a>
             </div>
-            <div id="add-comment-to-question-container">
+            <div id="disp-question-btn-container">
                 <a href="{{ url_for('add_new_comment_to_question', question_id=question.id) }}">
                     <button type="submit" class="submit-btn">Add comment</button>
                 </a>
             </div>
         </div>
 
-    </div>
     <br>
     <h3>Comment to questions:</h3>
     {% for comment in question_comments %}
