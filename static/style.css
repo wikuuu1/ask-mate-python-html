@@ -72,6 +72,14 @@ body {
     background-size: 2rem, 2rem;
 }
 
+#search-check-button-container:hover {
+    display: inline-block;
+    background: url('/static/img/check_hover.png') no-repeat center;
+    width:4rem;
+    height:100%;
+    background-size: 2rem, 2rem;
+}
+
 #check-button-container:hover {
     background: url('/static/img/check_hover.png') no-repeat center;
     width:100%;
