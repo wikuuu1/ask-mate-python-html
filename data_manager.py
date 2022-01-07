@@ -78,7 +78,8 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int) -> list:
     query = """
             SELECT *
             FROM answer
-            WHERE question_id=%(question_id)s"""
+            WHERE question_id=%(question_id)s
+            ORDER BY vote_number DESC """
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchall()
 
