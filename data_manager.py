@@ -88,13 +88,21 @@ def delete_question(cursor: RealDictCursor, question_id: int):
 
 
 @database_common.connection_handler
-def edit_question(cursor: RealDictCursor, question_id: int, title: str, message: str):
-    query = """
-                UPDATE question
-                SET title=%(title)s, message=%(message)s
-                WHERE id=%(question_id)s 
-                """
-    cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
+def edit_question(cursor: RealDictCursor, question_id: int, title: str, message: str, image: str):
+    if not image:
+        query = """
+                    UPDATE question
+                    SET title=%(title)s, message=%(message)s
+                    WHERE id=%(question_id)s 
+                    """
+        cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message})
+    else:
+        query = """
+                    UPDATE question
+                    SET title=%(title)s, message=%(message)s, image=%(image)s
+                    WHERE id=%(question_id)s 
+                    """
+        cursor.execute(query, {'question_id': question_id, 'title': title, 'message': message, 'image': image})
 
 
 @database_common.connection_handler
@@ -137,16 +145,29 @@ def delete_comment_in_database(cursor: RealDictCursor, comment_id: int):
 
 
 @database_common.connection_handler
-def edit_answer(cursor: RealDictCursor, answer_id: int, message: str) -> RealDictRow:
-    query = """
-                UPDATE answer
-                SET message=%(message)s
-                WHERE id=%(answer_id)s;
-                SELECT question_id
-                FROM answer
-                WHERE id=%(answer_id)s
-                """
-    cursor.execute(query, {'answer_id': answer_id, 'message': message})
+def edit_answer(cursor: RealDictCursor, answer_id: int, message: str, image: str) -> RealDictRow:
+    if image:
+        query = """
+                    UPDATE answer
+                    SET message=%(message)s, image=%(image)s
+                    WHERE id=%(answer_id)s;
+                    SELECT question_id
+                    FROM answer
+                    WHERE id=%(answer_id)s
+                    """
+        cursor.execute(query, {'answer_id': answer_id, 'message': message, 'image': image})
+
+    else:
+        query = """
+                    UPDATE answer
+                    SET message=%(message)s
+                    WHERE id=%(answer_id)s;
+                    SELECT question_id
+                    FROM answer
+                    WHERE id=%(answer_id)s
+                    """
+        cursor.execute(query, {'answer_id': answer_id, 'message': message})
+
     return cursor.fetchone()['question_id']
 
 

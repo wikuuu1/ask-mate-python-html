@@ -15,9 +15,13 @@
             <p class="paragraph_look"><span>Description: </span>{{ question['message'] }}</p>
        </div>
 
-        <form action="/question/{{ question['id'] }}/new-answer" method="POST" class="action_form">
+        <form action="{{ url_for('add_new_answer_post', question_id=question.id) }}" enctype="multipart/form-data" method="POST" class="action_form">
             <label for="answer_description">Write your answer here:</label><br>
             <textarea name="answer_description" id="answer_description"></textarea>
+
+            <input type="file" id="file" name="image"/>
+            <label for="file" class="btn">Add an image</label>
+
             <input type="submit" value="Add your answer">
         </form>
         <a href="{{ url_for('display_question', question_id=question.id)}}" style="text-decoration: none"><div class="back_to_question_btn">Back to question</div></a>

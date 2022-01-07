@@ -199,6 +199,21 @@ select {
     line-height: 1.2
 }
 
+.image-details{
+    font-size: 1rem;
+    font-family: Arial,serif;
+    display: -webkit-box;
+    text-align: center;
+    width: 100%;
+    -webkit-box-orient: vertical;
+    line-height: 1
+}
+
+summary:hover{
+    color: rgb(255, 159, 24);
+    cursor: pointer;
+}
+
 .link {
     color:white;
     font-size: 2rem;

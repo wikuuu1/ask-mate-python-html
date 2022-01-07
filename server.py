@@ -101,9 +101,12 @@ def edit_question(question_id):
 def edit_question_post(question_id):
     title = request.form['edited_question']
     message = request.form['edited_description']
-    # path = save_image_to_file(request.files)
 
-    data_manager.edit_question(question_id, title, message)
+    path = None
+    if request.files:
+        path = save_image_to_file(request.files)
+
+    data_manager.edit_question(question_id, title, message, path)
 
     return redirect(f'/question/{question_id}')
 
@@ -135,8 +138,11 @@ def add_new_answer(question_id):
 def add_new_answer_post(question_id):
     submission_time = util.get_actual_date()
     message = request.form['answer_description']
-    new_data_row = [submission_time, '0', question_id, message, 'image']
-    data_manager.save_answer_to_table(new_data_row)
+
+    path = save_image_to_file(request.files)
+
+    new_table_row = [submission_time, '0', question_id, message, path]
+    data_manager.save_answer_to_table(new_table_row)
 
     return redirect(f'/question/{question_id}')
 
@@ -166,7 +172,12 @@ def edit_answer(answer_id):
 @app.route("/answer/<int:answer_id>/edit", methods=["POST"])
 def edit_answer_post(answer_id):
     message = request.form['edit_answer_message']
-    question_id = data_manager.edit_answer(answer_id, message)
+
+    path = None
+    if request.files:
+        path = save_image_to_file(request.files)
+
+    question_id = data_manager.edit_answer(answer_id, message, path)
 
     return redirect(f'/question/{question_id}')
 

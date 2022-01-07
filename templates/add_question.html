@@ -9,9 +9,10 @@
 
         <h1 class="action_title">Add New Question</h1>
 
-        <form action="{{ url_for('add_question') }}" enctype="multipart/form-data" method="POST" class="action_form">
+        <form action="{{ url_for('add_new_question_post') }}" enctype="multipart/form-data" method="POST" class="action_form">
             <label for="question_title">Title:</label><br>
             <input type="text" id="question_title" name="new_question"><br><br>
+
             <label for="question_description">Description:</label><br>
             <textarea name="question_description" id="question_description"></textarea><br>
 

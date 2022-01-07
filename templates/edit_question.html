@@ -9,14 +9,14 @@
     <div class="form_layout">
         <h1 class="action_title">Edit Question</h1>
 
-        <form action="/question/{{ question['id'] }}/edit" method="POST" class="action_form">
+        <form action="/question/{{ question['id'] }}/edit" enctype="multipart/form-data" method="POST" class="action_form">
             <label for="edited_question">Question Title:</label><br>
             <input type="text" id="edited_question" name="edited_question" value="{{ question['title'] }}"><br><br>
             <label for="edited_description">Question Description:</label><br>
             <textarea name="edited_description" id="question_description">{{ question['message'] }}</textarea>
 
-{#            <input type="file" id="file" name="image"/>#}
-{#            <label for="file" class="btn">Add an image</label>#}
+            <input type="file" id="file" name="image"/>
+            <label for="file" class="btn">Edit image</label>
 
             <input type="submit" value="Edit question">
 

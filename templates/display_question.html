@@ -93,7 +93,7 @@
         </div>
         <table style="width: 100%">
             <tr style="height: 1px">
-                <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem" rowspan="2">
+                <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem" rowspan="3">
                     <div style="text-align: center">
                         <img src='/static/img/clock.png' style="width: 1rem; height: 1rem; position: center">
                         <br>
@@ -103,7 +103,7 @@
                 <td style="padding: 1rem 1rem 0rem;vertical-align: top; height: 100%">
                     <div class="message-overflowing">{{ question['message'] }}</div>
                 </td>
-                <td style="vertical-align: top; text-align: right; width: 4rem" rowspan="2">
+                <td style="vertical-align: top; text-align: right; width: 4rem" rowspan="3">
                     <div class="views">
                         <div style="padding-top: 0.65rem; padding-left: 0.5rem; padding-right: 0.5rem">{{ question['view_number'] }}</div>
                         <img src='/static/img/eye.png' style="float: right; width: 1.5rem; height: 1.5rem; padding-top: 0.65rem">
@@ -120,6 +120,19 @@
                             </a>
                         </div>
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% if question.image != None %}
+                    <div class="image-details">
+                        <details style="padding: 1rem">
+                            <summary>Image details</summary>
+                            <br>
+                            <img src="/{{ question.image }}" alt="{{ question.image }}">
+                        </details>
+                    </div>
+                    {% endif %}
                 </td>
             </tr>
             <tr>
@@ -207,7 +220,7 @@
     <div class="answer-on-list">
         <table style="width: 100%">
             <tr style="height: 1px">
-                <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem" rowspan="2">
+                <td style="width: 3rem; vertical-align: middle; align-content: center; padding-top: 1rem; padding-left: 1rem" rowspan="3">
                     <div style="text-align: center">
                         <img src='/static/img/clock.png' style="width: 1rem; height: 1rem; position: center">
                         <br>
@@ -217,7 +230,7 @@
                 <td style="padding: 1rem 1rem 0rem;vertical-align: top; height: 100%">
                     <div class="message-overflowing">{{ answer['message'] }}</div>
                 </td>
-                <td style="vertical-align: top; text-align: right; width: 7.5rem" rowspan="2">
+                <td style="vertical-align: top; text-align: right; width: 7.5rem" rowspan="3">
                     <div class="views"></div>
                     <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 50%">
                         <div class="votes">
@@ -235,7 +248,20 @@
             </tr>
             <tr>
                 <td>
-                                        <div style="width: 100%; text-align: center">
+                    {% if answer.image != None %}
+                    <div class="image-details">
+                        <details style="padding: 1rem">
+                            <summary>Image details</summary>
+                            <br>
+                            <img src="/{{ answer.image }}" alt="{{ answer.image }}">
+                        </details>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 100%; text-align: center">
                         <div id="answer-btn-container">
                             <a href="{{ url_for('edit_answer', answer_id=answer.id) }}">
                                 <div class="tooltip" id="edit-content-btn">
