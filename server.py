@@ -224,29 +224,30 @@ def edit_answer_comment_post(comment_id):
 
 @app.route("/question/<int:question_id>/vote_up", methods=["GET"])
 def up_vote_question(question_id):
-    data_manager.update_vote_number(question_id, '+')
+    data_manager.update_question_vote_number(question_id, '+')
 
     return redirect('/')
 
 
 @app.route("/question/<int:question_id>/vote_down", methods=["GET"])
 def down_vote_question(question_id):
-    data_manager.update_vote_number(question_id, '-')
+    data_manager.update_question_vote_number(question_id, '-')
 
     return redirect('/')
 
-@app.route("/question/<int:question_id>/<int:answer_id>/vote_up", methods=["GET"])
-def up_vote_answer(answer_id):
-    data_manager.update_vote_number(answer_id, '+')
 
-    return redirect('/question/<int:question_id>')
+@app.route("/question/<int:question_id>/<int:answer_id>/vote_up", methods=["GET"])
+def up_vote_answer(question_id, answer_id):
+    data_manager.update_answer_vote_number(answer_id, '+')
+
+    return redirect(f'/question/{question_id}')
 
 
 @app.route("/question/<int:question_id>/<int:answer_id>/vote_down", methods=["GET"])
-def down_vote_answer(answer_id):
-    data_manager.update_vote_number(answer_id, '-')
+def down_vote_answer(question_id, answer_id):
+    data_manager.update_answer_vote_number(answer_id, '-')
 
-    return redirect('/question/<int:question_id>')
+    return redirect(f'/question/{question_id}')
 
 
 def save_image_to_file(files):

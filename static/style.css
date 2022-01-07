@@ -106,8 +106,7 @@ select {
     border: rgb(57,57,57) 5px solid;
     border-left-width: 0;
     border-radius: 0 30px 30px 0;
-    max-width: 95%;
-    width: fit-content;
+    width: 95%;
 }
 
 .answer-on-list {
