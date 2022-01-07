@@ -247,7 +247,7 @@ def get_comments_for_question(cursor: RealDictCursor, question_id: str) -> list:
 @database_common.connection_handler
 def update_question_vote_number(cursor: RealDictCursor, question_id: str, vote_dir: str):
     query = """
-            UPDATE answer
+            UPDATE question
             SET vote_number=vote_number {} 1   
             WHERE id=%(question_id)s""".format(vote_dir)
     cursor.execute(query, {'question_id': question_id})
