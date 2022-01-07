@@ -330,7 +330,7 @@ form textarea {
     font-size: 1em;
     resize: none;
 }
-input[type=submit] {
+input[type=submit]{
     font-family: Arial,serif;
     display: block;
     width: 17rem;
@@ -434,4 +434,18 @@ p.paragraph_look > span {
     background: linear-gradient(to top, #ff9933 0%, #ffcc66 100%);
     border-radius: 10px 10px 10px 0;
     text-align: center;
+}
+
+#cos{
+    font-family: Arial,serif;
+    display: block;
+    width: 17rem;
+    background: rgb(255,255,255);
+    margin: 1rem auto;
+    padding: 10px 15px;
+    color: rgb(57,57,57);
+    font-size: 1rem;
+}
+label span {
+    color: red;
 }
