@@ -598,3 +598,7 @@ button.submit-btn:hover {
     cursor: pointer;
     transition: 0.5s;
 }
+
+label span {
+    color: red;
+}

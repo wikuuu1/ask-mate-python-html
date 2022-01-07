@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title%}Login page{% endblock %}
+{% block content %}
+    <a href="/">
+        <div id="logo-container"></div>
+    </a>
+
+    <div class="form_layout">
+
+        <h1 class="action_title">REGISTER</h1>
+
+        <form action="{{ url_for('register') }}" enctype="multipart/form-data" method="POST" class="action_form">
+            <label for="display_username">Display username: <span>required</span></label><br>
+            <input type="text" id="display_username" name="display_username" required style="width: 160px; margin: 0; line-height: 0; border-radius: 0;font-size: 1em"><br><br>
+
+            <label for="email">Email address: <span>required</span></label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="password">Password: <span>required</span></label><br>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <label for="confirm_password">Confirm password: <span>required</span><br></label>
+            <input type="password" id="confirm_password" name="password" required><br><br>
+
+            <span id='message'></span>
+
+            <input type="checkbox" id="terms_of_use">
+            <label for="terms_of_use">I agree to the THERMS OF USE</label>
+
+            <input type="submit" value="SIGN IN">
+        </form>
+
+    </div>
+{% endblock %}
