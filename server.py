@@ -22,6 +22,24 @@ ORDER_DIR_SQL = {'ascending': 'ASC',
 
 
 @app.route("/")
+def list_5_questions():
+    order_by = request.args.get(ORDER_BY, 'submission_time')
+    order_dir = request.args.get(ORDER_DIR, 'descending')
+
+    if order_by in ORDER_BY_LABELS:
+        order_dir_sql = ORDER_DIR_SQL[order_dir]
+        users_questions = data_manager.get_5_questions_sorted(order_by, order_dir_sql)
+
+        return render_template('list.html',
+                               questions=users_questions,
+                               order_by_labels=ORDER_BY_LABELS,
+                               order_dir_labels=ORDER_DIR_LABELS,
+                               current_order_by=order_by,
+                               current_order_dir=order_dir)
+
+    return redirect("/")
+
+
 @app.route("/list")
 def list_questions():
     order_by = request.args.get(ORDER_BY, 'submission_time')
@@ -38,7 +56,7 @@ def list_questions():
                                current_order_by=order_by,
                                current_order_dir=order_dir)
 
-    return redirect("/")
+    return redirect("/list")
 
 
 @app.route("/question/<int:question_id>", methods=["GET"])
@@ -173,7 +191,6 @@ def edit_answer(answer_id):
 def edit_answer_post(answer_id):
     message = request.form['edit_answer_message']
 
-    path = None
     if request.files:
         path = save_image_to_file(request.files)
 
@@ -237,14 +254,14 @@ def edit_answer_comment_post(comment_id):
 def up_vote_question(question_id):
     data_manager.update_question_vote_number(question_id, '+')
 
-    return redirect('/')
+    return redirect('/list')
 
 
 @app.route("/question/<int:question_id>/vote_down", methods=["GET"])
 def down_vote_question(question_id):
     data_manager.update_question_vote_number(question_id, '-')
 
-    return redirect('/')
+    return redirect('/list')
 
 
 @app.route("/question/<int:question_id>/<int:answer_id>/vote_up", methods=["GET"])
@@ -271,6 +288,20 @@ def save_image_to_file(files):
 
     except OSError:
         pass
+
+
+@app.route("/search", methods=["GET"])
+def search_questions():
+    phrase = '%'+request.args.get('q')+'%'
+
+    search_results = data_manager.get_questions_by_search(phrase)
+
+    return render_template('list.html',
+                           questions=search_results,
+                           order_by_labels=ORDER_BY_LABELS,
+                           order_dir_labels=ORDER_DIR_LABELS,
+                           current_order_by='submission_time',
+                           current_order_dir='descending')
 
 
 @app.route("/login", methods=["GET"])

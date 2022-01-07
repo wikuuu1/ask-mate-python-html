@@ -64,6 +64,14 @@ body {
     background-size: 2rem, 2rem;
 }
 
+#search-check-button-container {
+    display: inline-block;
+    background: url('/static/img/check.png') no-repeat center;
+    width:4rem;
+    height:100%;
+    background-size: 2rem, 2rem;
+}
+
 #check-button-container:hover {
     background: url('/static/img/check_hover.png') no-repeat center;
     width:100%;
@@ -382,7 +390,8 @@ label:not(label[for="order_by"], label[for="order-direction"], label[for="file"]
 }
 
 form textarea {
-    font-family: Arial,serif;
+    display: inline-block;
+    font-family: AquireLight,serif;
     margin: 5px 0;
     padding: 0;
     width: 100%;
@@ -392,6 +401,54 @@ form textarea {
     font-size: 1em;
     resize: none;
 }
+
+form textarea.search {
+    display: flex;
+    font-family: Arial,serif;
+    margin: 5px 0;
+    padding: 0;
+    min-width: 8rem;
+    height: 1.5rem;
+    border: 1px solid rgb(57,57,57);
+    border-radius: 0 10px 10px 0px;
+    font-size: 1rem;
+    resize: none;
+}
+
+.search-text {
+    display: inline-block;
+    font-family: AquireLight,serif;
+    padding: 0.6rem 0.6rem 0.6rem 0;
+    font-size: 1rem;
+}
+
+.login-container{
+    background-color: rgb(255,255,255);
+    height: 1.5rem;
+    border-style: solid;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-color: rgb(57,57,57);
+    border-radius: 0px 0px 10px 10px;
+}
+
+.sign-link {
+    color: rgb(57,57,57);
+    font-family: Aquire,serif;
+    text-decoration: none;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.sign-link:hover {
+    color: rgb(255, 159, 24);
+    font-family: Aquire,serif;
+    text-decoration: none;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
 input[type=submit] {
     font-family: Arial,serif;
     display: block;

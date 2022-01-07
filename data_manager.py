@@ -16,11 +16,40 @@ def get_all_questions_sorted(cursor: RealDictCursor, order_by: str, order_dir: s
 
 
 @database_common.connection_handler
+def get_5_questions_sorted(cursor: RealDictCursor, order_by: str, order_dir: str) -> list:
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY {} {} 
+        LIMIT 5
+        """.format(order_by, order_dir)
+
+    cursor.execute(query)
+
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def get_all_answers(cursor: RealDictCursor) -> list:
     query = """
         SELECT *
         FROM answer"""
     cursor.execute(query)
+
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_questions_by_search(cursor: RealDictCursor, phrase) -> list:
+    query = """
+            SELECT question.id, question.submission_time, question.view_number, question.vote_number, question.title, 
+            question.message, question.image
+            FROM question
+            LEFT JOIN answer on question.id = answer.question_id
+            WHERE question.title like %(phrase)s OR question.message like %(phrase)s OR answer.message like %(phrase)s
+            """
+
+    cursor.execute(query, {'phrase': phrase})
 
     return cursor.fetchall()
 

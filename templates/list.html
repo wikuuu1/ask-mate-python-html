@@ -6,25 +6,39 @@
         <tbody>
             <tr>
                 <td style="vertical-align: middle; width: 337px">
-                    <a href="/">
+                    <a href="/list">
                         <div id="logo-container"></div>
                     </a>
-                    <a href="{{ url_for('login') }}">
-                        SIGN IN
-                    </a>
-                    <a href="{{ url_for('register') }}">
-                        SIGN UP
-                    </a>
-
                 </td>
-                <td style="vertical-align: bottom; padding-bottom: 2rem; padding-right: 2.5rem">
+                <td style="vertical-align: top; padding-bottom: 2rem; padding-right: 2.5rem">
+                    <div style="display: flex; flex-grow: 1; flex-direction: row; justify-content: center">
+                        <div class="login-container">
+                            <a href="{{ url_for('login') }}" class="sign-link">
+                                SIGN IN
+                            </a>
+                            <a href="{{ url_for('register') }}" class="sign-link">
+                                SIGN UP
+                            </a>
+                        </div>
+                    </div>
+                    <form action="{{ url_for('search_questions') }}" method="GET" class="action_form" style="padding-top: 2rem">
+                        <div style="display: flex; justify-content: center">
+                            <div style="display: flex; flex-grow: 1; flex-direction: row; padding-bottom: 1rem; justify-content: left">
+                                <div class="search-text">Search:</div>
+                                <textarea class="search" name="q"></textarea>
+                                <div id="search-check-button-container" style="background-position: top;min-width: 2rem; text-align: center">
+                                    <input type="image" src='/static/img/opaque.png' style="width: 2rem; height: 2.8rem; min-width: 2rem; vertical-align: middle"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
                     <div style="display: flex; justify-content: center">
                         <div id="question-button-container">
                             <a href="{{ url_for('add_question') }}">
                                 <img src='/static/img/opaque.png' style="width:250px; max-height:100%;">
                             </a>
                         </div>
-
                     </div>
                 </td>
                 <td style="width: 16rem;padding-top: 1rem">

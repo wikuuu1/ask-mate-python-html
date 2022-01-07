@@ -6,7 +6,7 @@
         <tbody>
             <tr>
                 <td style="vertical-align: middle; width: 337px">
-                    <a href="/">
+                    <a href="/list">
                         <div id="logo-container"></div>
                     </a>
 
@@ -317,7 +317,7 @@
                             </div>
                             <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 50%">
                                 <div id="disp-question-btn-container" style="margin-right: 0.6rem">
-                                    <a href="{{ url_for('delete_question_comment', comment_id=a_comment.id) }}">
+                                    <a href="{{ url_for('delete_question_comment', question_id=question.id, comment_id=a_comment.id) }}">
                                         <div class="tooltip" id="delete-content-btn">
                                             <span class="tooltip-text-left">Delete</span>
                                         </div>
