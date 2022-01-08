@@ -3,10 +3,12 @@ import data_manager
 import os
 import util
 import bcrypt
+from datetime import timedelta
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/upload'
 app.secret_key = "super secret key"
+app.permanent_session_lifetime = timedelta(days=5)
 
 ORDER_BY = 'order_by'
 ORDER_BY_LABELS = {'submission_time': 'Time added',
@@ -318,17 +320,16 @@ def search_questions():
 
 @app.route("/login", methods=["GET"])
 def login():
+    if 'logged-user' in session:
+        redirect('/')
     return render_template('login.html', invalid='False')
-
-
-@app.route("/logout", methods=["GET"])
-def logout():
-    session.clear()
-    return redirect('/')
 
 
 @app.route("/login", methods=["POST"])
 def login_post():
+    if request.form.get('perm_session') == 'on':
+        session.permanent = True
+
     email = request.form.get('email')
     password = request.form.get('password')
     user_details = data_manager.get_user_details(email)
@@ -344,6 +345,12 @@ def login_post():
             return render_template('login.html', invalid=True)
     else:
         return render_template('login.html', invalid=True)
+
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.clear()
+    return redirect('/')
 
 
 @app.route("/register", methods=["GET"])
