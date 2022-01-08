@@ -5,10 +5,15 @@
         <div id="logo-container"></div>
     </a>
 
-    <div class="form_layout" style="min-width: 25rem; max-width: 25rem; margin-left: auto; margin-right: auto">
+    <div class="form_layout" style="min-width: 25rem; max-width: 25rem; margin-left: auto; margin-right: auto; text-align: center">
 
         <h1 class="action_title">LOGIN DETAILS</h1>
-
+        <span style="color: #9C1A1C">
+            {% if invalid == True %}
+                <br>
+                Invalid credinals!
+            {% endif %}
+        </span>
         <form action="{{ url_for('login') }}" enctype="multipart/form-data" method="POST" class="action_form" style="text-align: center">
             <label for="email">Email address:</label><br>
             <input type="email" id="email" name="email"><br><br>

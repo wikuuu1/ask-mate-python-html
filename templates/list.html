@@ -13,12 +13,18 @@
                 <td style="vertical-align: top; padding-bottom: 2rem; padding-right: 2.5rem">
                     <div style="display: flex; flex-grow: 1; flex-direction: row; justify-content: center">
                         <div class="login-container">
-                            <a href="{{ url_for('login') }}" class="sign-link">
-                                SIGN IN
-                            </a>
-                            <a href="{{ url_for('register') }}" class="sign-link">
-                                SIGN UP
-                            </a>
+                            {% if logged_in == False %}
+                                <a href="{{ url_for('login') }}" class="sign-link">
+                                    SIGN IN
+                                </a>
+                                <a href="{{ url_for('register') }}" class="sign-link">
+                                    SIGN UP
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('logout') }}" class="sign-link">
+                                    LOG OUT
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                     <form action="{{ url_for('search_questions') }}" method="GET" class="action_form" style="padding-top: 2rem">

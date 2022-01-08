@@ -283,11 +283,19 @@ def delete_answers_to_questions(cursor: RealDictCursor, question_id: str):
 
 
 @database_common.connection_handler
-def create_new_user(cursor: RealDictCursor, username: str, email: str, password: str):
+def create_new_user(cursor: RealDictCursor, username: str, email: str, hashed_pw: str, reg_date: str):
     query = """
-            INSERT INTO users (username, email, password, submission_time, edited_count)
-            VALUES (%(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s)
+            INSERT INTO users (username, h_password, email, reg_date)
+            VALUES (%(username)s, %(hashed_pw)s, %(email)s, %(reg_date)s)
             """
-    cursor.execute(query, {'question_id': new_table_row[0], 'answer_id': new_table_row[1],
-                           'message': new_table_row[2], 'submission_time': new_table_row[3],
-                           'edited_count': new_table_row[4]})
+    cursor.execute(query, {'username': username, 'email': email, 'hashed_pw': hashed_pw, 'reg_date': reg_date})
+
+
+@database_common.connection_handler
+def get_user_details(cursor: RealDictCursor, email: str) -> RealDictRow:
+    query = """
+            SELECT *
+            FROM users
+            WHERE email=%(email)s"""
+    cursor.execute(query, {'email': email})
+    return cursor.fetchone()

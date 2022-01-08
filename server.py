@@ -2,9 +2,11 @@ from flask import Flask, render_template, request, redirect, session
 import data_manager
 import os
 import util
+import bcrypt
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/upload'
+app.secret_key = "super secret key"
 
 ORDER_BY = 'order_by'
 ORDER_BY_LABELS = {'submission_time': 'Time added',
@@ -26,6 +28,10 @@ def list_5_questions():
     order_by = request.args.get(ORDER_BY, 'submission_time')
     order_dir = request.args.get(ORDER_DIR, 'descending')
 
+    logged_in = False
+    if 'logged-user' in session:
+        logged_in = True
+
     if order_by in ORDER_BY_LABELS:
         order_dir_sql = ORDER_DIR_SQL[order_dir]
         users_questions = data_manager.get_5_questions_sorted(order_by, order_dir_sql)
@@ -35,7 +41,8 @@ def list_5_questions():
                                order_by_labels=ORDER_BY_LABELS,
                                order_dir_labels=ORDER_DIR_LABELS,
                                current_order_by=order_by,
-                               current_order_dir=order_dir)
+                               current_order_dir=order_dir,
+                               logged_in=logged_in)
 
     return redirect("/")
 
@@ -44,6 +51,10 @@ def list_5_questions():
 def list_questions():
     order_by = request.args.get(ORDER_BY, 'submission_time')
     order_dir = request.args.get(ORDER_DIR, 'descending')
+
+    logged_in = False
+    if session['logged-user']:
+        logged_in = True
 
     if order_by in ORDER_BY_LABELS:
         order_dir_sql = ORDER_DIR_SQL[order_dir]
@@ -54,7 +65,8 @@ def list_questions():
                                order_by_labels=ORDER_BY_LABELS,
                                order_dir_labels=ORDER_DIR_LABELS,
                                current_order_by=order_by,
-                               current_order_dir=order_dir)
+                               current_order_dir=order_dir,
+                               logged_in=logged_in)
 
     return redirect("/list")
 
@@ -306,13 +318,36 @@ def search_questions():
 
 @app.route("/login", methods=["GET"])
 def login():
+    return render_template('login.html', invalid='False')
 
-    return render_template('login.html')
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.clear()
+    return redirect('/')
+
+
+@app.route("/login", methods=["POST"])
+def login_post():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    user_details = data_manager.get_user_details(email)
+    print(user_details)
+
+    if user_details:
+        hashed_pass = bytes.fromhex(user_details['h_password'])
+
+        if bcrypt.checkpw(password.encode('utf-8'), hashed_pass):
+            session['logged-user'] = user_details['username']
+            return redirect('/')
+        else:
+            return render_template('login.html', invalid=True)
+    else:
+        return render_template('login.html', invalid=True)
 
 
 @app.route("/register", methods=["GET"])
 def register():
-
     return render_template('register.html', missmatch='False')
 
 
@@ -321,10 +356,13 @@ def register_post():
     password = request.form.get('password')
     c_password = request.form.get('c_password')
     if password == c_password:
+        hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        hashed_pass_hex = hashed_pw.hex()
+        reg_time = util.get_actual_date()
         username = request.form.get('username')
         email = request.form.get('email')
-        data_manager.create_new_user(username, email, password)
-        return render_template('login.html')
+        data_manager.create_new_user(username, email, hashed_pass_hex, reg_time)
+        return redirect('/login')
     else:
         return render_template('register.html', missmatch=True)
 
