@@ -680,4 +680,5 @@ button.submit-btn:hover {
 
 label span {
     color: red;
+    font-weight: normal;
 }

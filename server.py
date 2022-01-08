@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import data_manager
 import os
 import util
@@ -313,7 +313,20 @@ def login():
 @app.route("/register", methods=["GET"])
 def register():
 
-    return render_template('register.html')
+    return render_template('register.html', missmatch='False')
+
+
+@app.route("/register", methods=["POST"])
+def register_post():
+    password = request.form.get('password')
+    c_password = request.form.get('c_password')
+    if password == c_password:
+        username = request.form.get('username')
+        email = request.form.get('email')
+        data_manager.create_new_user(username, email, password)
+        return render_template('login.html')
+    else:
+        return render_template('register.html', missmatch=True)
 
 
 if __name__ == "__main__":

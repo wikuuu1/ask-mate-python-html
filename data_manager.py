@@ -280,3 +280,14 @@ def delete_answers_to_questions(cursor: RealDictCursor, question_id: str):
                 WHERE quesiton_id=%(question_id)s
                 """
     cursor.execute(query, {'question_id': question_id})
+
+
+@database_common.connection_handler
+def create_new_user(cursor: RealDictCursor, username: str, email: str, password: str):
+    query = """
+            INSERT INTO users (username, email, password, submission_time, edited_count)
+            VALUES (%(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s)
+            """
+    cursor.execute(query, {'question_id': new_table_row[0], 'answer_id': new_table_row[1],
+                           'message': new_table_row[2], 'submission_time': new_table_row[3],
+                           'edited_count': new_table_row[4]})

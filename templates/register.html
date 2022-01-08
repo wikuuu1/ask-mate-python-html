@@ -5,29 +5,37 @@
         <div id="logo-container"></div>
     </a>
 
-    <div class="form_layout">
+    <div class="form_layout" style="min-width: 28rem; max-width: 28rem; margin-left: auto; margin-right: auto">
 
-        <h1 class="action_title">REGISTER</h1>
+        <h1 class="action_title">REGISTRATION DETAILS</h1>
 
-        <form action="{{ url_for('register') }}" enctype="multipart/form-data" method="POST" class="action_form">
-            <label for="display_username">Display username: <span>required</span></label><br>
-            <input type="text" id="display_username" name="display_username" required style="width: 160px; margin: 0; line-height: 0; border-radius: 0;font-size: 1em"><br><br>
+        <form action="{{ url_for('register_post') }}" method="POST" class="action_form" style="text-align: center">
+            <label for="display_username">User name:</label><br>
+            <input id="display_username" name="username" required><br><br>
 
-            <label for="email">Email address: <span>required</span></label><br>
+            <label for="email">Email address: </label><br>
             <input type="email" id="email" name="email" required><br><br>
 
-            <label for="password">Password: <span>required</span></label><br>
+            <label for="password">Password:
+            <span>
+                {% if missmatch == True %}
+                    missmatch
+                {% endif %}
+            </span>
+            </label>
+            <br>
             <input type="password" id="password" name="password" required><br><br>
 
-            <label for="confirm_password">Confirm password: <span>required</span><br></label>
-            <input type="password" id="confirm_password" name="password" required><br><br>
+            <label for="confirm_password">Confirm password:
+            <span>
+                {% if missmatch == True %}
+                    missmatch
+                {% endif %}
+            </span>
+            </label><br>
+            <input type="password" id="confirm_password" name="c_password" required><br><br>
 
-            <span id='message'></span>
-
-            <input type="checkbox" id="terms_of_use">
-            <label for="terms_of_use">I agree to the THERMS OF USE</label>
-
-            <input type="submit" value="SIGN IN">
+            <input type="submit" value="REGISTER">
         </form>
 
     </div>

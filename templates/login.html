@@ -5,11 +5,11 @@
         <div id="logo-container"></div>
     </a>
 
-    <div class="form_layout">
+    <div class="form_layout" style="min-width: 25rem; max-width: 25rem; margin-left: auto; margin-right: auto">
 
-        <h1 class="action_title">Log yourself</h1>
+        <h1 class="action_title">LOGIN DETAILS</h1>
 
-        <form action="{{ url_for('login') }}" enctype="multipart/form-data" method="POST" class="action_form">
+        <form action="{{ url_for('login') }}" enctype="multipart/form-data" method="POST" class="action_form" style="text-align: center">
             <label for="email">Email address:</label><br>
             <input type="email" id="email" name="email"><br><br>
 
@@ -19,7 +19,7 @@
             <input type="checkbox" id="remember_me">
             <label for="remember_me">Remember me:</label>
 
-            <input type="submit" value="SIGN IN">
+            <input type="submit" value="LOG IN">
         </form>
 
     </div>
