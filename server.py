@@ -55,7 +55,7 @@ def list_questions():
     order_dir = request.args.get(ORDER_DIR, 'descending')
 
     logged_in = False
-    if session['logged-user']:
+    if 'logged-user' in session:
         logged_in = True
 
     if order_by in ORDER_BY_LABELS:
