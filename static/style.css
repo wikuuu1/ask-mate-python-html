@@ -399,7 +399,7 @@ label:not(label[for="order_by"], label[for="order-direction"], label[for="file"]
 
 form textarea {
     display: inline-block;
-    font-family: AquireLight,serif;
+    font-family: Arial, monospace;
     margin: 5px 0;
     padding: 0;
     width: 100%;
